@@ -14,16 +14,218 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ft: {
+        Row: {
+          aprovado_por: string | null
+          created_at: string
+          data_cancelamento: string | null
+          data_ft: string
+          data_lancamento: string
+          funcionario_id: string
+          horas_compensadas: number
+          horas_trabalhadas: number
+          id: string
+          lancado_por: string | null
+          motivo: string
+          observacao: string | null
+          status: Database["public"]["Enums"]["ft_status"]
+          tipo_folga: string
+          updated_at: string
+        }
+        Insert: {
+          aprovado_por?: string | null
+          created_at?: string
+          data_cancelamento?: string | null
+          data_ft: string
+          data_lancamento?: string
+          funcionario_id: string
+          horas_compensadas?: number
+          horas_trabalhadas?: number
+          id?: string
+          lancado_por?: string | null
+          motivo: string
+          observacao?: string | null
+          status?: Database["public"]["Enums"]["ft_status"]
+          tipo_folga: string
+          updated_at?: string
+        }
+        Update: {
+          aprovado_por?: string | null
+          created_at?: string
+          data_cancelamento?: string | null
+          data_ft?: string
+          data_lancamento?: string
+          funcionario_id?: string
+          horas_compensadas?: number
+          horas_trabalhadas?: number
+          id?: string
+          lancado_por?: string | null
+          motivo?: string
+          observacao?: string | null
+          status?: Database["public"]["Enums"]["ft_status"]
+          tipo_folga?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ft_funcionario_id_fkey"
+            columns: ["funcionario_id"]
+            isOneToOne: false
+            referencedRelation: "funcionarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ft_historico: {
+        Row: {
+          acao: string
+          alterado_por: string | null
+          created_at: string
+          ft_id: string
+          id: string
+          observacao: string | null
+          status_anterior: Database["public"]["Enums"]["ft_status"] | null
+          status_novo: Database["public"]["Enums"]["ft_status"] | null
+        }
+        Insert: {
+          acao: string
+          alterado_por?: string | null
+          created_at?: string
+          ft_id: string
+          id?: string
+          observacao?: string | null
+          status_anterior?: Database["public"]["Enums"]["ft_status"] | null
+          status_novo?: Database["public"]["Enums"]["ft_status"] | null
+        }
+        Update: {
+          acao?: string
+          alterado_por?: string | null
+          created_at?: string
+          ft_id?: string
+          id?: string
+          observacao?: string | null
+          status_anterior?: Database["public"]["Enums"]["ft_status"] | null
+          status_novo?: Database["public"]["Enums"]["ft_status"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ft_historico_ft_id_fkey"
+            columns: ["ft_id"]
+            isOneToOne: false
+            referencedRelation: "ft"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      funcionarios: {
+        Row: {
+          banco_horas: number
+          cargo: string
+          cpf: string
+          created_at: string
+          data_admissao: string
+          id: string
+          nome: string
+          re: string
+          setor: string
+          status_ativo: boolean
+          supervisor: string | null
+          turno: string
+          updated_at: string
+        }
+        Insert: {
+          banco_horas?: number
+          cargo: string
+          cpf: string
+          created_at?: string
+          data_admissao: string
+          id?: string
+          nome: string
+          re: string
+          setor: string
+          status_ativo?: boolean
+          supervisor?: string | null
+          turno: string
+          updated_at?: string
+        }
+        Update: {
+          banco_horas?: number
+          cargo?: string
+          cpf?: string
+          created_at?: string
+          data_admissao?: string
+          id?: string
+          nome?: string
+          re?: string
+          setor?: string
+          status_ativo?: boolean
+          supervisor?: string | null
+          turno?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          nome: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id: string
+          nome: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          nome?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "gestor" | "rh"
+      ft_status: "PENDENTE" | "APROVADA" | "NEGADA" | "CANCELADA"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +352,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "gestor", "rh"],
+      ft_status: ["PENDENTE", "APROVADA", "NEGADA", "CANCELADA"],
+    },
   },
 } as const
