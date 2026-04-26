@@ -35,7 +35,7 @@ function Historico() {
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
-                <Th>Colaborador</Th><Th>Data FT</Th><Th>Tipo</Th><Th>Status</Th><Th>Atualizado em</Th><Th></Th>
+                <Th>Colaborador</Th><Th>Data FT</Th><Th>Tipo</Th><Th>Status</Th><Th>Atualizado em</Th><Th> </Th>
               </tr>
             </thead>
             <tbody className="divide-y divide-oak-light">

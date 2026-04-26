@@ -13,9 +13,15 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AppRelatoriosRouteImport } from './routes/_app.relatorios'
+import { Route as AppHistoricoRouteImport } from './routes/_app.historico'
+import { Route as AppAprovacoesRouteImport } from './routes/_app.aprovacoes'
 import { Route as AppFuncionariosIndexRouteImport } from './routes/_app.funcionarios.index'
+import { Route as AppFtIndexRouteImport } from './routes/_app.ft.index'
 import { Route as AppFuncionariosNovoRouteImport } from './routes/_app.funcionarios.novo'
 import { Route as AppFuncionariosIdRouteImport } from './routes/_app.funcionarios.$id'
+import { Route as AppFtNovoRouteImport } from './routes/_app.ft.novo'
+import { Route as AppFtIdRouteImport } from './routes/_app.ft.$id'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -36,9 +42,29 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppRelatoriosRoute = AppRelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHistoricoRoute = AppHistoricoRouteImport.update({
+  id: '/historico',
+  path: '/historico',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAprovacoesRoute = AppAprovacoesRouteImport.update({
+  id: '/aprovacoes',
+  path: '/aprovacoes',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFuncionariosIndexRoute = AppFuncionariosIndexRouteImport.update({
   id: '/funcionarios/',
   path: '/funcionarios/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFtIndexRoute = AppFtIndexRouteImport.update({
+  id: '/ft/',
+  path: '/ft/',
   getParentRoute: () => AppRoute,
 } as any)
 const AppFuncionariosNovoRoute = AppFuncionariosNovoRouteImport.update({
@@ -51,21 +77,43 @@ const AppFuncionariosIdRoute = AppFuncionariosIdRouteImport.update({
   path: '/funcionarios/$id',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFtNovoRoute = AppFtNovoRouteImport.update({
+  id: '/ft/novo',
+  path: '/ft/novo',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFtIdRoute = AppFtIdRouteImport.update({
+  id: '/ft/$id',
+  path: '/ft/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
+  '/aprovacoes': typeof AppAprovacoesRoute
+  '/historico': typeof AppHistoricoRoute
+  '/relatorios': typeof AppRelatoriosRoute
+  '/ft/$id': typeof AppFtIdRoute
+  '/ft/novo': typeof AppFtNovoRoute
   '/funcionarios/$id': typeof AppFuncionariosIdRoute
   '/funcionarios/novo': typeof AppFuncionariosNovoRoute
+  '/ft/': typeof AppFtIndexRoute
   '/funcionarios/': typeof AppFuncionariosIndexRoute
 }
 export interface FileRoutesByTo {
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
+  '/aprovacoes': typeof AppAprovacoesRoute
+  '/historico': typeof AppHistoricoRoute
+  '/relatorios': typeof AppRelatoriosRoute
   '/': typeof AppIndexRoute
+  '/ft/$id': typeof AppFtIdRoute
+  '/ft/novo': typeof AppFtNovoRoute
   '/funcionarios/$id': typeof AppFuncionariosIdRoute
   '/funcionarios/novo': typeof AppFuncionariosNovoRoute
+  '/ft': typeof AppFtIndexRoute
   '/funcionarios': typeof AppFuncionariosIndexRoute
 }
 export interface FileRoutesById {
@@ -73,9 +121,15 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
+  '/_app/aprovacoes': typeof AppAprovacoesRoute
+  '/_app/historico': typeof AppHistoricoRoute
+  '/_app/relatorios': typeof AppRelatoriosRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/ft/$id': typeof AppFtIdRoute
+  '/_app/ft/novo': typeof AppFtNovoRoute
   '/_app/funcionarios/$id': typeof AppFuncionariosIdRoute
   '/_app/funcionarios/novo': typeof AppFuncionariosNovoRoute
+  '/_app/ft/': typeof AppFtIndexRoute
   '/_app/funcionarios/': typeof AppFuncionariosIndexRoute
 }
 export interface FileRouteTypes {
@@ -84,25 +138,43 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro'
     | '/login'
+    | '/aprovacoes'
+    | '/historico'
+    | '/relatorios'
+    | '/ft/$id'
+    | '/ft/novo'
     | '/funcionarios/$id'
     | '/funcionarios/novo'
+    | '/ft/'
     | '/funcionarios/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/cadastro'
     | '/login'
+    | '/aprovacoes'
+    | '/historico'
+    | '/relatorios'
     | '/'
+    | '/ft/$id'
+    | '/ft/novo'
     | '/funcionarios/$id'
     | '/funcionarios/novo'
+    | '/ft'
     | '/funcionarios'
   id:
     | '__root__'
     | '/_app'
     | '/cadastro'
     | '/login'
+    | '/_app/aprovacoes'
+    | '/_app/historico'
+    | '/_app/relatorios'
     | '/_app/'
+    | '/_app/ft/$id'
+    | '/_app/ft/novo'
     | '/_app/funcionarios/$id'
     | '/_app/funcionarios/novo'
+    | '/_app/ft/'
     | '/_app/funcionarios/'
   fileRoutesById: FileRoutesById
 }
@@ -142,11 +214,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/relatorios': {
+      id: '/_app/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof AppRelatoriosRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/historico': {
+      id: '/_app/historico'
+      path: '/historico'
+      fullPath: '/historico'
+      preLoaderRoute: typeof AppHistoricoRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/aprovacoes': {
+      id: '/_app/aprovacoes'
+      path: '/aprovacoes'
+      fullPath: '/aprovacoes'
+      preLoaderRoute: typeof AppAprovacoesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/funcionarios/': {
       id: '/_app/funcionarios/'
       path: '/funcionarios'
       fullPath: '/funcionarios/'
       preLoaderRoute: typeof AppFuncionariosIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/ft/': {
+      id: '/_app/ft/'
+      path: '/ft'
+      fullPath: '/ft/'
+      preLoaderRoute: typeof AppFtIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/funcionarios/novo': {
@@ -163,20 +263,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFuncionariosIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/ft/novo': {
+      id: '/_app/ft/novo'
+      path: '/ft/novo'
+      fullPath: '/ft/novo'
+      preLoaderRoute: typeof AppFtNovoRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/ft/$id': {
+      id: '/_app/ft/$id'
+      path: '/ft/$id'
+      fullPath: '/ft/$id'
+      preLoaderRoute: typeof AppFtIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAprovacoesRoute: typeof AppAprovacoesRoute
+  AppHistoricoRoute: typeof AppHistoricoRoute
+  AppRelatoriosRoute: typeof AppRelatoriosRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppFtIdRoute: typeof AppFtIdRoute
+  AppFtNovoRoute: typeof AppFtNovoRoute
   AppFuncionariosIdRoute: typeof AppFuncionariosIdRoute
   AppFuncionariosNovoRoute: typeof AppFuncionariosNovoRoute
+  AppFtIndexRoute: typeof AppFtIndexRoute
   AppFuncionariosIndexRoute: typeof AppFuncionariosIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAprovacoesRoute: AppAprovacoesRoute,
+  AppHistoricoRoute: AppHistoricoRoute,
+  AppRelatoriosRoute: AppRelatoriosRoute,
   AppIndexRoute: AppIndexRoute,
+  AppFtIdRoute: AppFtIdRoute,
+  AppFtNovoRoute: AppFtNovoRoute,
   AppFuncionariosIdRoute: AppFuncionariosIdRoute,
   AppFuncionariosNovoRoute: AppFuncionariosNovoRoute,
+  AppFtIndexRoute: AppFtIndexRoute,
   AppFuncionariosIndexRoute: AppFuncionariosIndexRoute,
 }
 
