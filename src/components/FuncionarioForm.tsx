@@ -51,7 +51,7 @@ export function FuncionarioForm({ initial, onDone }: Props) {
         <SelectField label="Turno" value={form.turno} onChange={set("turno")} options={["Manhã", "Tarde", "Noite", "Integral"]} />
         <Field label="Supervisor" value={form.supervisor} onChange={set("supervisor")} />
         <Field label="Banco de horas (h)" type="number" step="0.5" value={form.banco_horas} onChange={set("banco_horas")} />
-        <SelectField label="Status" value={String(form.status_ativo)} onChange={(e) => setForm({ ...form, status_ativo: e.target.value === "true" })} options={[{ value: "true", label: "Ativo" }, { value: "false", label: "Inativo" }]} />
+        <SelectField label="Status" value={String(form.status_ativo)} onChange={(e: any) => setForm({ ...form, status_ativo: e.target.value === "true" })} options={[{ value: "true", label: "Ativo" }, { value: "false", label: "Inativo" }]} />
       </div>
       <div className="flex justify-end gap-3 pt-4 border-t border-oak-light">
         <button type="button" onClick={onDone} className="px-5 py-2.5 text-sm font-medium text-oak-dark hover:bg-oak-medium/20 rounded-xl">Cancelar</button>
