@@ -12,6 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as AppRouteImport } from './routes/_app'
+import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AppFuncionariosIndexRouteImport } from './routes/_app.funcionarios.index'
+import { Route as AppFuncionariosNovoRouteImport } from './routes/_app.funcionarios.novo'
+import { Route as AppFuncionariosIdRouteImport } from './routes/_app.funcionarios.$id'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -27,33 +31,83 @@ const AppRoute = AppRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFuncionariosIndexRoute = AppFuncionariosIndexRouteImport.update({
+  id: '/funcionarios/',
+  path: '/funcionarios/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFuncionariosNovoRoute = AppFuncionariosNovoRouteImport.update({
+  id: '/funcionarios/novo',
+  path: '/funcionarios/novo',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFuncionariosIdRoute = AppFuncionariosIdRouteImport.update({
+  id: '/funcionarios/$id',
+  path: '/funcionarios/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AppRoute
+  '/': typeof AppIndexRoute
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
+  '/funcionarios/$id': typeof AppFuncionariosIdRoute
+  '/funcionarios/novo': typeof AppFuncionariosNovoRoute
+  '/funcionarios/': typeof AppFuncionariosIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof AppRoute
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
+  '/': typeof AppIndexRoute
+  '/funcionarios/$id': typeof AppFuncionariosIdRoute
+  '/funcionarios/novo': typeof AppFuncionariosNovoRoute
+  '/funcionarios': typeof AppFuncionariosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_app': typeof AppRoute
+  '/_app': typeof AppRouteWithChildren
   '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
+  '/_app/': typeof AppIndexRoute
+  '/_app/funcionarios/$id': typeof AppFuncionariosIdRoute
+  '/_app/funcionarios/novo': typeof AppFuncionariosNovoRoute
+  '/_app/funcionarios/': typeof AppFuncionariosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cadastro' | '/login'
+  fullPaths:
+    | '/'
+    | '/cadastro'
+    | '/login'
+    | '/funcionarios/$id'
+    | '/funcionarios/novo'
+    | '/funcionarios/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cadastro' | '/login'
-  id: '__root__' | '/_app' | '/cadastro' | '/login'
+  to:
+    | '/cadastro'
+    | '/login'
+    | '/'
+    | '/funcionarios/$id'
+    | '/funcionarios/novo'
+    | '/funcionarios'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/cadastro'
+    | '/login'
+    | '/_app/'
+    | '/_app/funcionarios/$id'
+    | '/_app/funcionarios/novo'
+    | '/_app/funcionarios/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AppRoute: typeof AppRoute
+  AppRoute: typeof AppRouteWithChildren
   CadastroRoute: typeof CadastroRoute
   LoginRoute: typeof LoginRoute
 }
@@ -81,11 +135,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/': {
+      id: '/_app/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/funcionarios/': {
+      id: '/_app/funcionarios/'
+      path: '/funcionarios'
+      fullPath: '/funcionarios/'
+      preLoaderRoute: typeof AppFuncionariosIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/funcionarios/novo': {
+      id: '/_app/funcionarios/novo'
+      path: '/funcionarios/novo'
+      fullPath: '/funcionarios/novo'
+      preLoaderRoute: typeof AppFuncionariosNovoRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/funcionarios/$id': {
+      id: '/_app/funcionarios/$id'
+      path: '/funcionarios/$id'
+      fullPath: '/funcionarios/$id'
+      preLoaderRoute: typeof AppFuncionariosIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
+  AppFuncionariosIdRoute: typeof AppFuncionariosIdRoute
+  AppFuncionariosNovoRoute: typeof AppFuncionariosNovoRoute
+  AppFuncionariosIndexRoute: typeof AppFuncionariosIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
+  AppFuncionariosIdRoute: AppFuncionariosIdRoute,
+  AppFuncionariosNovoRoute: AppFuncionariosNovoRoute,
+  AppFuncionariosIndexRoute: AppFuncionariosIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  AppRoute: AppRoute,
+  AppRoute: AppRouteWithChildren,
   CadastroRoute: CadastroRoute,
   LoginRoute: LoginRoute,
 }
