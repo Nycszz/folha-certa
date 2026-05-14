@@ -63,7 +63,7 @@ function FtList() {
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
-                <Th>Colaborador</Th><Th>Data FT</Th><Th>Tipo</Th><Th>Horas</Th><Th>Motivo</Th><Th>Status</Th>
+                <Th>Colaborador</Th><Th>Data</Th><Th>Escala</Th><Th>Horas</Th><Th>Observação</Th><Th>Status</Th>
               </tr>
             </thead>
             <tbody className="divide-y divide-oak-light">
