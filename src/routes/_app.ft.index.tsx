@@ -34,11 +34,11 @@ function FtList() {
     <div className="space-y-8">
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-3xl font-light tracking-tight">Folgas Trabalhadas</h1>
+          <h1 className="text-3xl font-light tracking-tight">Movimentações Operacionais</h1>
           <p className="text-muted-foreground mt-1">{items.length} lançamentos no total.</p>
         </div>
         <Link to="/ft/novo" className="inline-flex items-center gap-2 bg-oak-dark text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90">
-          <Plus className="size-4" /> Nova FT
+          <Plus className="size-4" /> Nova Movimentação
         </Link>
       </div>
 
@@ -58,12 +58,12 @@ function FtList() {
         </div>
 
         {filtered.length === 0 ? (
-          <div className="p-12 text-center text-sm text-muted-foreground">Nenhuma FT encontrada.</div>
+          <div className="p-12 text-center text-sm text-muted-foreground">Nenhuma movimentação encontrada.</div>
         ) : (
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
-                <Th>Colaborador</Th><Th>Data FT</Th><Th>Tipo</Th><Th>Horas</Th><Th>Motivo</Th><Th>Status</Th>
+                <Th>Colaborador</Th><Th>Data</Th><Th>Escala</Th><Th>Horas</Th><Th>Observação</Th><Th>Status</Th>
               </tr>
             </thead>
             <tbody className="divide-y divide-oak-light">
@@ -74,9 +74,9 @@ function FtList() {
                     <p className="text-[10px] text-oak-dark/60">RE {f.funcionario?.re}</p>
                   </td>
                   <td className="px-8 py-5 text-sm tabular-nums">{format(new Date(f.data_ft + "T00:00:00"), "dd/MM/yyyy")}</td>
-                  <td className="px-8 py-5 text-sm">{f.tipo_folga}</td>
+                  <td className="px-8 py-5 text-sm">{f.escala_servico ?? f.tipo_folga ?? "—"}</td>
                   <td className="px-8 py-5 text-sm font-medium tabular-nums">{f.horas_trabalhadas}h</td>
-                  <td className="px-8 py-5 text-sm text-oak-dark/70 max-w-xs truncate">{f.motivo}</td>
+                  <td className="px-8 py-5 text-sm text-oak-dark/70 max-w-xs truncate">{f.observacao ?? f.motivo ?? "—"}</td>
                   <td className="px-8 py-5"><StatusBadge status={f.status} /></td>
                 </tr>
               ))}

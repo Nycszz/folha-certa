@@ -25,7 +25,7 @@ function Historico() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-light tracking-tight">Histórico de Cancelamentos</h1>
-        <p className="text-muted-foreground mt-1">FT canceladas ou negadas.</p>
+        <p className="text-muted-foreground mt-1">Movimentações canceladas ou negadas.</p>
       </div>
 
       <div className="bg-card border border-oak-light rounded-3xl overflow-hidden">
@@ -35,7 +35,7 @@ function Historico() {
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
-                <Th>Colaborador</Th><Th>Data FT</Th><Th>Tipo</Th><Th>Status</Th><Th>Atualizado em</Th><Th>{"\u00A0"}</Th>
+                <Th>Colaborador</Th><Th>Data</Th><Th>Escala</Th><Th>Status</Th><Th>Atualizado em</Th><Th>{"\u00A0"}</Th>
               </tr>
             </thead>
             <tbody className="divide-y divide-oak-light">
@@ -43,7 +43,7 @@ function Historico() {
                 <tr key={f.id}>
                   <td className="px-8 py-4 text-sm font-medium">{f.funcionario?.nome}</td>
                   <td className="px-8 py-4 text-sm tabular-nums">{format(new Date(f.data_ft + "T00:00:00"), "dd/MM/yyyy")}</td>
-                  <td className="px-8 py-4 text-sm">{f.tipo_folga}</td>
+                  <td className="px-8 py-4 text-sm">{f.escala_servico ?? f.tipo_folga ?? "—"}</td>
                   <td className="px-8 py-4"><StatusBadge status={f.status} /></td>
                   <td className="px-8 py-4 text-sm tabular-nums">{format(new Date(f.updated_at), "dd/MM/yy HH:mm")}</td>
                   <td className="px-8 py-4 text-right">

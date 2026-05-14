@@ -31,9 +31,9 @@ function CadastroPage() {
     <div className="min-h-dvh flex items-center justify-center bg-canvas px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <div className="inline-flex size-14 items-center justify-center bg-oak-dark text-primary-foreground rounded-2xl text-xl font-semibold italic mb-4">FT</div>
+          <div className="inline-flex size-14 items-center justify-center bg-oak-dark text-primary-foreground rounded-2xl text-base font-semibold italic mb-4">MO</div>
           <h1 className="text-3xl font-light tracking-tight">Criar conta</h1>
-          <p className="text-sm text-muted-foreground mt-2">Acesso ao Controle de FT</p>
+          <p className="text-sm text-muted-foreground mt-2">Acesso à Movimentação Operacional</p>
         </div>
 
         <div className="bg-card border border-oak-light rounded-3xl p-8 shadow-sm">

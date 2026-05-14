@@ -67,11 +67,11 @@ function Dashboard() {
     <div className="space-y-10">
       <div>
         <h1 className="text-3xl font-light tracking-tight">Painel de Controle</h1>
-        <p className="text-muted-foreground mt-1">Monitoramento de Folgas Trabalhadas no mês corrente.</p>
+        <p className="text-muted-foreground mt-1">Monitoramento de Movimentações Operacionais no mês corrente.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <KpiCard label="FT Pendentes" value={kpis.pendentes} icon={<Clock className="size-4" />} />
+        <KpiCard label="Movimentações Pendentes" value={kpis.pendentes} icon={<Clock className="size-4" />} />
         <KpiCard label="Aprovadas" value={kpis.aprovadas} icon={<CheckCircle2 className="size-4" />} />
         <KpiCard label="Negadas" value={kpis.negadas} icon={<XCircle className="size-4" />} />
         <KpiCard label="Horas no Mês" value={`${kpis.horas}h`} icon={<ClipboardList className="size-4" />} />
@@ -85,8 +85,8 @@ function Dashboard() {
           </div>
           {recent.length === 0 ? (
             <div className="p-12 text-center text-sm text-muted-foreground">
-              Nenhuma FT registrada ainda.{" "}
-              <Link to="/ft/novo" className="text-oak-dark font-medium hover:underline">Registrar primeira FT</Link>
+              Nenhuma movimentação registrada ainda.{" "}
+              <Link to="/ft/novo" className="text-oak-dark font-medium hover:underline">Registrar primeira movimentação</Link>
             </div>
           ) : (
             <table className="w-full text-left">
@@ -144,7 +144,7 @@ function Dashboard() {
           <div className="bg-card border border-oak-light p-6 rounded-3xl">
             <h3 className="text-[10px] font-bold uppercase tracking-widest text-oak-dark/50 mb-4">Atalhos</h3>
             <div className="space-y-2">
-              <Link to="/ft/novo" className="block px-4 py-3 bg-sand rounded-xl text-sm font-medium hover:bg-oak-medium/30 transition-colors">+ Nova FT</Link>
+              <Link to="/ft/novo" className="block px-4 py-3 bg-sand rounded-xl text-sm font-medium hover:bg-oak-medium/30 transition-colors">+ Nova Movimentação</Link>
               <Link to="/funcionarios/novo" className="block px-4 py-3 bg-sand rounded-xl text-sm font-medium hover:bg-oak-medium/30 transition-colors">+ Cadastrar funcionário</Link>
               <Link to="/aprovacoes" className="block px-4 py-3 bg-sand rounded-xl text-sm font-medium hover:bg-oak-medium/30 transition-colors">Aprovações pendentes</Link>
             </div>

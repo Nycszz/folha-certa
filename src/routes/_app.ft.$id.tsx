@@ -21,7 +21,7 @@ function FtDetalhe() {
 
   useEffect(() => { load(); }, [id]);
   async function load() {
-    const { data } = await supabase.from("ft").select("*, funcionario:funcionarios(*)").eq("id", id).maybeSingle();
+    const { data } = await supabase.from("ft").select("*, funcionario:funcionarios(*), funcionario_faltante:funcionarios!ft_funcionario_faltante_id_fkey(nome, re)").eq("id", id).maybeSingle();
     setFt(data);
     const { data: h } = await supabase.from("ft_historico").select("*").eq("ft_id", id).order("created_at", { ascending: false });
     setHistorico(h ?? []);
@@ -34,7 +34,7 @@ function FtDetalhe() {
     const { error } = await supabase.from("ft").update(payload).eq("id", id);
     if (error) toast.error(error.message);
     else {
-      toast.success(`FT ${status.toLowerCase()}`);
+      toast.success(`Movimentação ${status.toLowerCase()}`);
       load();
     }
   }
@@ -52,7 +52,7 @@ function FtDetalhe() {
 
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">FT #{ft.id.slice(0, 8)}</p>
+          <p className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">Movimentação #{ft.id.slice(0, 8)}</p>
           <h1 className="text-3xl font-light tracking-tight mt-1">{ft.funcionario?.nome}</h1>
           <p className="text-muted-foreground mt-1">{ft.funcionario?.cargo} • {ft.funcionario?.setor}</p>
         </div>
@@ -60,11 +60,13 @@ function FtDetalhe() {
       </div>
 
       <div className="bg-card border border-oak-light rounded-3xl p-8 grid grid-cols-2 gap-6">
-        <Info label="Data da FT" value={format(new Date(ft.data_ft + "T00:00:00"), "dd 'de' MMMM, yyyy", { locale: ptBR })} />
-        <Info label="Tipo de folga" value={ft.tipo_folga} />
+        <Info label="Data" value={format(new Date(ft.data_ft + "T00:00:00"), "dd 'de' MMMM, yyyy", { locale: ptBR })} />
+        <Info label="Escala" value={ft.escala_servico ?? ft.tipo_folga ?? "—"} />
         <Info label="Horas trabalhadas" value={`${ft.horas_trabalhadas}h`} />
         <Info label="Horas compensadas" value={`${ft.horas_compensadas}h`} />
-        <Info label="Motivo" value={ft.motivo} className="col-span-2" />
+        {ft.funcionario_faltante && (
+          <Info label="Funcionário faltante" value={`${ft.funcionario_faltante.nome} (RE ${ft.funcionario_faltante.re})`} className="col-span-2" />
+        )}
         {ft.observacao && <Info label="Observação" value={ft.observacao} className="col-span-2" />}
         <Info label="Lançada em" value={format(new Date(ft.data_lancamento), "dd/MM/yyyy HH:mm")} />
         {ft.data_cancelamento && <Info label="Cancelada em" value={format(new Date(ft.data_cancelamento), "dd/MM/yyyy HH:mm")} />}
@@ -82,7 +84,7 @@ function FtDetalhe() {
       )}
 
       {!isCanceled && (
-        <button onClick={() => { if (confirm("Cancelar esta FT?")) changeStatus("CANCELADA"); }} className="inline-flex items-center gap-2 text-xs text-rose-600 hover:underline">
+        <button onClick={() => { if (confirm("Cancelar esta movimentação?")) changeStatus("CANCELADA"); }} className="inline-flex items-center gap-2 text-xs text-rose-600 hover:underline">
           <Ban className="size-3" /> Cancelar lançamento
         </button>
       )}

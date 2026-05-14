@@ -26,7 +26,7 @@ function Aprovacoes() {
     const { error } = await supabase.from("ft").update({ status, aprovado_por: user?.id }).eq("id", id);
     if (error) toast.error(error.message);
     else {
-      toast.success(`FT ${status.toLowerCase()}`);
+      toast.success(`Movimentação ${status.toLowerCase()}`);
       load();
     }
   }
@@ -35,18 +35,18 @@ function Aprovacoes() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-light tracking-tight">Aprovações Pendentes</h1>
-        <p className="text-muted-foreground mt-1">{items.length} FT aguardando análise.</p>
+        <p className="text-muted-foreground mt-1">{items.length} movimentação(ões) aguardando análise.</p>
       </div>
 
       {!isGestor && (
         <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl p-4 text-sm">
-          Somente gestores podem aprovar ou negar FT. Você pode visualizar a fila.
+          Somente gestores podem aprovar ou negar movimentações. Você pode visualizar a fila.
         </div>
       )}
 
       {items.length === 0 ? (
         <div className="bg-card border border-oak-light rounded-3xl p-12 text-center text-sm text-muted-foreground">
-          Nenhuma FT pendente. Tudo em dia! ✨
+          Nenhuma movimentação pendente. Tudo em dia! ✨
         </div>
       ) : (
         <div className="space-y-4">
@@ -58,9 +58,9 @@ function Aprovacoes() {
                   <StatusBadge status={f.status} />
                 </div>
                 <p className="text-xs text-oak-dark/60 mt-1">
-                  {f.funcionario?.cargo} • RE {f.funcionario?.re} • {format(new Date(f.data_ft + "T00:00:00"), "dd/MM/yyyy")} • {f.horas_trabalhadas}h • {f.tipo_folga}
+                  {f.funcionario?.cargo} • RE {f.funcionario?.re} • {format(new Date(f.data_ft + "T00:00:00"), "dd/MM/yyyy")} • {f.horas_trabalhadas}h • {f.escala_servico ?? f.tipo_folga ?? "—"}
                 </p>
-                <p className="text-sm mt-2 text-oak-dark/80">{f.motivo}</p>
+                {f.observacao && <p className="text-sm mt-2 text-oak-dark/80">{f.observacao}</p>}
               </div>
               <div className="flex gap-2 shrink-0">
                 <button onClick={() => navigate({ to: "/ft/$id", params: { id: f.id } })} className="px-4 py-2 text-xs font-medium border border-oak-medium rounded-xl hover:bg-oak-medium/20">

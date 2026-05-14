@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Search } from "lucide-react";
-import { format } from "date-fns";
+
 
 export const Route = createFileRoute("/_app/funcionarios/")({
   component: FuncionariosList,
@@ -23,7 +23,7 @@ function FuncionariosList() {
   }
 
   const filtered = items.filter(
-    (i) => i.nome.toLowerCase().includes(q.toLowerCase()) || i.re.includes(q) || i.cpf.includes(q)
+    (i) => i.nome.toLowerCase().includes(q.toLowerCase()) || (i.re ?? "").includes(q)
   );
 
   async function handleDelete(id: string) {
@@ -54,7 +54,7 @@ function FuncionariosList() {
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Buscar por nome, RE ou CPF..."
+            placeholder="Buscar por nome ou RE..."
             className="flex-1 bg-transparent text-sm focus:outline-none"
           />
         </div>
@@ -65,7 +65,7 @@ function FuncionariosList() {
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
-                <Th>Nome</Th><Th>RE</Th><Th>Cargo</Th><Th>Setor</Th><Th>Turno</Th><Th>Admissão</Th><Th>Status</Th><Th>Ações</Th>
+                <Th>Nome</Th><Th>RE</Th><Th>Cargo</Th><Th>Posto</Th><Th>Turno</Th><Th>Banco horas</Th><Th>Status</Th><Th>Ações</Th>
               </tr>
             </thead>
             <tbody className="divide-y divide-oak-light">
@@ -74,9 +74,9 @@ function FuncionariosList() {
                   <td className="px-8 py-5 text-sm font-medium">{f.nome}</td>
                   <td className="px-8 py-5 text-sm tabular-nums">{f.re}</td>
                   <td className="px-8 py-5 text-sm">{f.cargo}</td>
-                  <td className="px-8 py-5 text-sm">{f.setor}</td>
+                  <td className="px-8 py-5 text-sm">{f.posto_servico ?? f.setor ?? "—"}</td>
                   <td className="px-8 py-5 text-sm">{f.turno}</td>
-                  <td className="px-8 py-5 text-sm tabular-nums">{format(new Date(f.data_admissao + "T00:00:00"), "dd/MM/yyyy")}</td>
+                  <td className="px-8 py-5 text-sm">{f.usa_banco_horas ? "Sim" : "Não"}</td>
                   <td className="px-8 py-5">
                     <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase ${f.status_ativo ? "bg-emerald-50 text-emerald-700" : "bg-stone-100 text-stone-600"}`}>
                       {f.status_ativo ? "Ativo" : "Inativo"}
