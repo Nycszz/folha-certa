@@ -74,9 +74,9 @@ function FtList() {
                     <p className="text-[10px] text-oak-dark/60">RE {f.funcionario?.re}</p>
                   </td>
                   <td className="px-8 py-5 text-sm tabular-nums">{format(new Date(f.data_ft + "T00:00:00"), "dd/MM/yyyy")}</td>
-                  <td className="px-8 py-5 text-sm">{f.tipo_folga}</td>
+                  <td className="px-8 py-5 text-sm">{f.escala_servico ?? f.tipo_folga ?? "—"}</td>
                   <td className="px-8 py-5 text-sm font-medium tabular-nums">{f.horas_trabalhadas}h</td>
-                  <td className="px-8 py-5 text-sm text-oak-dark/70 max-w-xs truncate">{f.motivo}</td>
+                  <td className="px-8 py-5 text-sm text-oak-dark/70 max-w-xs truncate">{f.observacao ?? f.motivo ?? "—"}</td>
                   <td className="px-8 py-5"><StatusBadge status={f.status} /></td>
                 </tr>
               ))}
