@@ -35,18 +35,18 @@ function Aprovacoes() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-light tracking-tight">Aprovações Pendentes</h1>
-        <p className="text-muted-foreground mt-1">{items.length} FT aguardando análise.</p>
+        <p className="text-muted-foreground mt-1">{items.length} movimentação(ões) aguardando análise.</p>
       </div>
 
       {!isGestor && (
         <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl p-4 text-sm">
-          Somente gestores podem aprovar ou negar FT. Você pode visualizar a fila.
+          Somente gestores podem aprovar ou negar movimentações. Você pode visualizar a fila.
         </div>
       )}
 
       {items.length === 0 ? (
         <div className="bg-card border border-oak-light rounded-3xl p-12 text-center text-sm text-muted-foreground">
-          Nenhuma FT pendente. Tudo em dia! ✨
+          Nenhuma movimentação pendente. Tudo em dia! ✨
         </div>
       ) : (
         <div className="space-y-4">
