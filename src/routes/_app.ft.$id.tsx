@@ -21,7 +21,7 @@ function FtDetalhe() {
 
   useEffect(() => { load(); }, [id]);
   async function load() {
-    const { data } = await supabase.from("ft").select("*, funcionario:funcionarios(*)").eq("id", id).maybeSingle();
+    const { data } = await supabase.from("ft").select("*, funcionario:funcionarios(*), funcionario_faltante:funcionarios!ft_funcionario_faltante_id_fkey(nome, re)").eq("id", id).maybeSingle();
     setFt(data);
     const { data: h } = await supabase.from("ft_historico").select("*").eq("ft_id", id).order("created_at", { ascending: false });
     setHistorico(h ?? []);
