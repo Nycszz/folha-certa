@@ -60,11 +60,13 @@ function FtDetalhe() {
       </div>
 
       <div className="bg-card border border-oak-light rounded-3xl p-8 grid grid-cols-2 gap-6">
-        <Info label="Data da FT" value={format(new Date(ft.data_ft + "T00:00:00"), "dd 'de' MMMM, yyyy", { locale: ptBR })} />
-        <Info label="Tipo de folga" value={ft.tipo_folga} />
+        <Info label="Data" value={format(new Date(ft.data_ft + "T00:00:00"), "dd 'de' MMMM, yyyy", { locale: ptBR })} />
+        <Info label="Escala" value={ft.escala_servico ?? ft.tipo_folga ?? "—"} />
         <Info label="Horas trabalhadas" value={`${ft.horas_trabalhadas}h`} />
         <Info label="Horas compensadas" value={`${ft.horas_compensadas}h`} />
-        <Info label="Motivo" value={ft.motivo} className="col-span-2" />
+        {ft.funcionario_faltante && (
+          <Info label="Funcionário faltante" value={`${ft.funcionario_faltante.nome} (RE ${ft.funcionario_faltante.re})`} className="col-span-2" />
+        )}
         {ft.observacao && <Info label="Observação" value={ft.observacao} className="col-span-2" />}
         <Info label="Lançada em" value={format(new Date(ft.data_lancamento), "dd/MM/yyyy HH:mm")} />
         {ft.data_cancelamento && <Info label="Cancelada em" value={format(new Date(ft.data_cancelamento), "dd/MM/yyyy HH:mm")} />}
