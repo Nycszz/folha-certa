@@ -27,12 +27,12 @@ export function AppLayout() {
       <aside className="w-72 bg-oak-light border-r border-oak-medium flex flex-col shrink-0">
         <div className="p-8">
           <div className="flex items-center gap-3">
-            <div className="size-10 bg-oak-dark rounded-xl flex items-center justify-center text-primary-foreground font-semibold text-lg italic">
-              FT
+            <div className="size-10 bg-oak-dark rounded-xl flex items-center justify-center text-primary-foreground font-semibold text-sm italic">
+              MO
             </div>
             <div>
-              <div className="text-lg font-medium tracking-tight">Controle FT</div>
-              <div className="text-[10px] text-oak-dark/60 uppercase tracking-widest">Folgas Trabalhadas</div>
+              <div className="text-lg font-medium tracking-tight">Movimentação</div>
+              <div className="text-[10px] text-oak-dark/60 uppercase tracking-widest">Operacional</div>
             </div>
           </div>
         </div>
