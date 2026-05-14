@@ -71,7 +71,7 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <KpiCard label="FT Pendentes" value={kpis.pendentes} icon={<Clock className="size-4" />} />
+        <KpiCard label="Movimentações Pendentes" value={kpis.pendentes} icon={<Clock className="size-4" />} />
         <KpiCard label="Aprovadas" value={kpis.aprovadas} icon={<CheckCircle2 className="size-4" />} />
         <KpiCard label="Negadas" value={kpis.negadas} icon={<XCircle className="size-4" />} />
         <KpiCard label="Horas no Mês" value={`${kpis.horas}h`} icon={<ClipboardList className="size-4" />} />
