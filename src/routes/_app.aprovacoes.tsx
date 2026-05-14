@@ -58,9 +58,9 @@ function Aprovacoes() {
                   <StatusBadge status={f.status} />
                 </div>
                 <p className="text-xs text-oak-dark/60 mt-1">
-                  {f.funcionario?.cargo} • RE {f.funcionario?.re} • {format(new Date(f.data_ft + "T00:00:00"), "dd/MM/yyyy")} • {f.horas_trabalhadas}h • {f.tipo_folga}
+                  {f.funcionario?.cargo} • RE {f.funcionario?.re} • {format(new Date(f.data_ft + "T00:00:00"), "dd/MM/yyyy")} • {f.horas_trabalhadas}h • {f.escala_servico ?? f.tipo_folga ?? "—"}
                 </p>
-                <p className="text-sm mt-2 text-oak-dark/80">{f.motivo}</p>
+                {f.observacao && <p className="text-sm mt-2 text-oak-dark/80">{f.observacao}</p>}
               </div>
               <div className="flex gap-2 shrink-0">
                 <button onClick={() => navigate({ to: "/ft/$id", params: { id: f.id } })} className="px-4 py-2 text-xs font-medium border border-oak-medium rounded-xl hover:bg-oak-medium/20">
