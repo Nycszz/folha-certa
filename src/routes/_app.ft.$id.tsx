@@ -84,7 +84,7 @@ function FtDetalhe() {
       )}
 
       {!isCanceled && (
-        <button onClick={() => { if (confirm("Cancelar esta FT?")) changeStatus("CANCELADA"); }} className="inline-flex items-center gap-2 text-xs text-rose-600 hover:underline">
+        <button onClick={() => { if (confirm("Cancelar esta movimentação?")) changeStatus("CANCELADA"); }} className="inline-flex items-center gap-2 text-xs text-rose-600 hover:underline">
           <Ban className="size-3" /> Cancelar lançamento
         </button>
       )}
