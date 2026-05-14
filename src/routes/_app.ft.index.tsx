@@ -19,7 +19,7 @@ function FtList() {
   async function load() {
     const { data } = await supabase
       .from("ft")
-      .select("*, funcionario:funcionarios(nome, cargo, re)")
+      .select("*, funcionario:funcionarios!ft_funcionario_id_fkey(nome, cargo, re)")
       .order("data_ft", { ascending: false });
     setItems(data ?? []);
   }

@@ -25,7 +25,7 @@ function Relatorios() {
   async function load() {
     const { data } = await supabase
       .from("ft")
-      .select("*, funcionario:funcionarios(nome, re, posto_servico, setor, cargo), funcionario_faltante:funcionarios!ft_funcionario_faltante_id_fkey(nome, re)")
+      .select("*, funcionario:funcionarios!ft_funcionario_id_fkey(nome, re, posto_servico, setor, cargo), funcionario_faltante:funcionarios!ft_funcionario_faltante_id_fkey(nome, re)")
       .gte("data_ft", start)
       .lte("data_ft", end)
       .order("data_ft");
