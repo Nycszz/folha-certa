@@ -74,9 +74,9 @@ function FuncionariosList() {
                   <td className="px-8 py-5 text-sm font-medium">{f.nome}</td>
                   <td className="px-8 py-5 text-sm tabular-nums">{f.re}</td>
                   <td className="px-8 py-5 text-sm">{f.cargo}</td>
-                  <td className="px-8 py-5 text-sm">{f.setor}</td>
+                  <td className="px-8 py-5 text-sm">{f.posto_servico ?? f.setor ?? "—"}</td>
                   <td className="px-8 py-5 text-sm">{f.turno}</td>
-                  <td className="px-8 py-5 text-sm tabular-nums">{format(new Date(f.data_admissao + "T00:00:00"), "dd/MM/yyyy")}</td>
+                  <td className="px-8 py-5 text-sm">{f.usa_banco_horas ? "Sim" : "Não"}</td>
                   <td className="px-8 py-5">
                     <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase ${f.status_ativo ? "bg-emerald-50 text-emerald-700" : "bg-stone-100 text-stone-600"}`}>
                       {f.status_ativo ? "Ativo" : "Inativo"}
