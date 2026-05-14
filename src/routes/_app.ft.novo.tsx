@@ -10,6 +10,7 @@ export const Route = createFileRoute("/_app/ft/novo")({
 });
 
 const ESCALAS = ["06x18", "18x06", "07x19", "19x07", "08x18", "Outros"];
+const MOTIVOS = ["Falta", "Atestado", "Remanejamento", "Reciclagem"];
 
 function NovaMovimentacao() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ function NovaMovimentacao() {
     data_ft: new Date().toISOString().split("T")[0],
     escala_servico: "06x18",
     escala_outros: "",
+    motivo: "Falta",
     horas_compensadas: 0,
     observacao: "",
   });
@@ -41,6 +43,7 @@ function NovaMovimentacao() {
       funcionario_faltante_id: form.funcionario_faltante_id || null,
       data_ft: form.data_ft,
       escala_servico: escala,
+      motivo: form.motivo,
       horas_trabalhadas: horas,
       horas_compensadas: Number(form.horas_compensadas),
       observacao: form.observacao || null,
@@ -101,6 +104,12 @@ function NovaMovimentacao() {
           <div>
             <label className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">Horas compensadas</label>
             <input type="number" step="0.5" min="0" value={form.horas_compensadas} onChange={set("horas_compensadas")} className="mt-2 w-full px-4 py-2.5 bg-sand rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-oak-dark/20" />
+          </div>
+          <div>
+            <label className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">Motivo da cobertura</label>
+            <select value={form.motivo} onChange={set("motivo")} className="mt-2 w-full px-4 py-2.5 bg-sand rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-oak-dark/20">
+              {MOTIVOS.map((m) => <option key={m}>{m}</option>)}
+            </select>
           </div>
         </div>
 
