@@ -43,7 +43,7 @@ function Historico() {
                 <tr key={f.id}>
                   <td className="px-8 py-4 text-sm font-medium">{f.funcionario?.nome}</td>
                   <td className="px-8 py-4 text-sm tabular-nums">{format(new Date(f.data_ft + "T00:00:00"), "dd/MM/yyyy")}</td>
-                  <td className="px-8 py-4 text-sm">{f.tipo_folga}</td>
+                  <td className="px-8 py-4 text-sm">{f.escala_servico ?? f.tipo_folga ?? "—"}</td>
                   <td className="px-8 py-4"><StatusBadge status={f.status} /></td>
                   <td className="px-8 py-4 text-sm tabular-nums">{format(new Date(f.updated_at), "dd/MM/yy HH:mm")}</td>
                   <td className="px-8 py-4 text-right">
