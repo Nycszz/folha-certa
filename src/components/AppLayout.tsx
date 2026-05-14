@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 const nav = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
   { to: "/funcionarios", label: "Funcionários", icon: Users },
-  { to: "/ft", label: "Gestão de FT", icon: ClipboardList },
+  { to: "/ft", label: "Movimentações", icon: ClipboardList },
   { to: "/aprovacoes", label: "Aprovações", icon: CheckCircle2 },
   { to: "/relatorios", label: "Relatórios", icon: FileBarChart },
   { to: "/historico", label: "Histórico", icon: History },
