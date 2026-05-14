@@ -52,7 +52,7 @@ function FtDetalhe() {
 
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">FT #{ft.id.slice(0, 8)}</p>
+          <p className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">Movimentação #{ft.id.slice(0, 8)}</p>
           <h1 className="text-3xl font-light tracking-tight mt-1">{ft.funcionario?.nome}</h1>
           <p className="text-muted-foreground mt-1">{ft.funcionario?.cargo} • {ft.funcionario?.setor}</p>
         </div>
