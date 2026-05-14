@@ -144,7 +144,7 @@ function Dashboard() {
           <div className="bg-card border border-oak-light p-6 rounded-3xl">
             <h3 className="text-[10px] font-bold uppercase tracking-widest text-oak-dark/50 mb-4">Atalhos</h3>
             <div className="space-y-2">
-              <Link to="/ft/novo" className="block px-4 py-3 bg-sand rounded-xl text-sm font-medium hover:bg-oak-medium/30 transition-colors">+ Nova FT</Link>
+              <Link to="/ft/novo" className="block px-4 py-3 bg-sand rounded-xl text-sm font-medium hover:bg-oak-medium/30 transition-colors">+ Nova Movimentação</Link>
               <Link to="/funcionarios/novo" className="block px-4 py-3 bg-sand rounded-xl text-sm font-medium hover:bg-oak-medium/30 transition-colors">+ Cadastrar funcionário</Link>
               <Link to="/aprovacoes" className="block px-4 py-3 bg-sand rounded-xl text-sm font-medium hover:bg-oak-medium/30 transition-colors">Aprovações pendentes</Link>
             </div>
