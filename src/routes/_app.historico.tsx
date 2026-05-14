@@ -25,7 +25,7 @@ function Historico() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-light tracking-tight">Histórico de Cancelamentos</h1>
-        <p className="text-muted-foreground mt-1">FT canceladas ou negadas.</p>
+        <p className="text-muted-foreground mt-1">Movimentações canceladas ou negadas.</p>
       </div>
 
       <div className="bg-card border border-oak-light rounded-3xl overflow-hidden">
