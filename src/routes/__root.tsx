@@ -8,8 +8,8 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Controle de FT — Folgas Trabalhadas" },
-      { name: "description", content: "Sistema corporativo de controle de Folgas Trabalhadas para RH e gestores." },
+      { title: "Movimentação Operacional" },
+      { name: "description", content: "Sistema corporativo de Movimentação Operacional para RH e gestores." },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
