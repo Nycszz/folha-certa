@@ -58,7 +58,7 @@ function FtList() {
         </div>
 
         {filtered.length === 0 ? (
-          <div className="p-12 text-center text-sm text-muted-foreground">Nenhuma FT encontrada.</div>
+          <div className="p-12 text-center text-sm text-muted-foreground">Nenhuma movimentação encontrada.</div>
         ) : (
           <table className="w-full text-left">
             <thead>
