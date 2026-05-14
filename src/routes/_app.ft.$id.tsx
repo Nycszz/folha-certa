@@ -64,6 +64,7 @@ function FtDetalhe() {
         <Info label="Escala" value={ft.escala_servico ?? ft.tipo_folga ?? "—"} />
         <Info label="Horas trabalhadas" value={`${ft.horas_trabalhadas}h`} />
         <Info label="Horas compensadas" value={`${ft.horas_compensadas}h`} />
+        {ft.motivo && <Info label="Motivo da cobertura" value={ft.motivo} />}
         {ft.funcionario_faltante && (
           <Info label="Funcionário faltante" value={`${ft.funcionario_faltante.nome} (RE ${ft.funcionario_faltante.re})`} className="col-span-2" />
         )}
