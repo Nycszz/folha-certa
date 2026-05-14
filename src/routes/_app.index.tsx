@@ -67,7 +67,7 @@ function Dashboard() {
     <div className="space-y-10">
       <div>
         <h1 className="text-3xl font-light tracking-tight">Painel de Controle</h1>
-        <p className="text-muted-foreground mt-1">Monitoramento de Folgas Trabalhadas no mês corrente.</p>
+        <p className="text-muted-foreground mt-1">Monitoramento de Movimentações Operacionais no mês corrente.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
