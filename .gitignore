@@ -32,6 +32,4 @@ dist-ssr
 *.sw?
 .env
 .env.local
-git rm --cached .env
-git commit -m "remove env"
-git push
+
