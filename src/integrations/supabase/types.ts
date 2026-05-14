@@ -141,7 +141,7 @@ export type Database = {
           nome: string
           posto_servico: string | null
           re: string
-          setor: string
+          setor: string | null
           status_ativo: boolean
           supervisor: string | null
           turno: string
@@ -158,7 +158,7 @@ export type Database = {
           nome: string
           posto_servico?: string | null
           re: string
-          setor: string
+          setor?: string | null
           status_ativo?: boolean
           supervisor?: string | null
           turno: string
@@ -175,7 +175,7 @@ export type Database = {
           nome?: string
           posto_servico?: string | null
           re?: string
-          setor?: string
+          setor?: string | null
           status_ativo?: boolean
           supervisor?: string | null
           turno?: string
