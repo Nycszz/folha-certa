@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
+import logoGrupoMc from "@/assets/logo-grupo-mc.png";
 
 export const Route = createFileRoute("/cadastro")({
   component: CadastroPage,
@@ -31,7 +32,7 @@ function CadastroPage() {
     <div className="min-h-dvh flex items-center justify-center bg-canvas px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <div className="inline-flex size-14 items-center justify-center bg-oak-dark text-primary-foreground rounded-2xl text-base font-semibold italic mb-4">MO</div>
+          <img src={logoGrupoMc} alt="Grupo MC" className="mx-auto size-20 object-contain mb-4" />
           <h1 className="text-3xl font-light tracking-tight">Criar conta</h1>
           <p className="text-sm text-muted-foreground mt-2">Acesso à Movimentação Operacional</p>
         </div>
