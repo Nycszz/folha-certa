@@ -10,25 +10,22 @@ interface Props {
 export function FuncionarioForm({ initial, onDone }: Props) {
   const [form, setForm] = useState({
     nome: initial?.nome ?? "",
-    cpf: initial?.cpf ?? "",
     re: initial?.re ?? "",
     cargo: initial?.cargo ?? "",
-    setor: initial?.setor ?? "",
-    data_admissao: initial?.data_admissao ?? "",
-    turno: initial?.turno ?? "Manhã",
-    status_ativo: initial?.status_ativo ?? true,
+    posto_servico: initial?.posto_servico ?? "",
     supervisor: initial?.supervisor ?? "",
-    banco_horas: initial?.banco_horas ?? 0,
+    turno: initial?.turno ?? "Manhã",
+    usa_banco_horas: initial?.usa_banco_horas ?? false,
+    status_ativo: initial?.status_ativo ?? true,
   });
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const payload = { ...form, banco_horas: Number(form.banco_horas) };
     const { error } = initial
-      ? await supabase.from("funcionarios").update(payload).eq("id", initial.id)
-      : await supabase.from("funcionarios").insert(payload);
+      ? await supabase.from("funcionarios").update(form).eq("id", initial.id)
+      : await supabase.from("funcionarios").insert(form as any);
     setLoading(false);
     if (error) toast.error(error.message);
     else {
@@ -43,15 +40,23 @@ export function FuncionarioForm({ initial, onDone }: Props) {
     <form onSubmit={handleSubmit} className="bg-card border border-oak-light rounded-3xl p-8 space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Field label="Nome completo" value={form.nome} onChange={set("nome")} required />
-        <Field label="CPF" value={form.cpf} onChange={set("cpf")} required />
         <Field label="RE" value={form.re} onChange={set("re")} required />
         <Field label="Cargo" value={form.cargo} onChange={set("cargo")} required />
-        <Field label="Setor" value={form.setor} onChange={set("setor")} required />
-        <Field label="Data de admissão" type="date" value={form.data_admissao} onChange={set("data_admissao")} required />
-        <SelectField label="Turno" value={form.turno} onChange={set("turno")} options={["Manhã", "Tarde", "Noite", "Integral"]} />
+        <Field label="Posto de serviço" value={form.posto_servico} onChange={set("posto_servico")} required />
         <Field label="Supervisor" value={form.supervisor} onChange={set("supervisor")} />
-        <Field label="Banco de horas (h)" type="number" step="0.5" value={form.banco_horas} onChange={set("banco_horas")} />
-        <SelectField label="Status" value={String(form.status_ativo)} onChange={(e: any) => setForm({ ...form, status_ativo: e.target.value === "true" })} options={[{ value: "true", label: "Ativo" }, { value: "false", label: "Inativo" }]} />
+        <SelectField label="Turno" value={form.turno} onChange={set("turno")} options={["Manhã", "Tarde", "Noite", "Integral"]} />
+        <SelectField
+          label="Banco de horas"
+          value={form.usa_banco_horas ? "true" : "false"}
+          onChange={(e: any) => setForm({ ...form, usa_banco_horas: e.target.value === "true" })}
+          options={[{ value: "true", label: "Sim" }, { value: "false", label: "Não" }]}
+        />
+        <SelectField
+          label="Status"
+          value={String(form.status_ativo)}
+          onChange={(e: any) => setForm({ ...form, status_ativo: e.target.value === "true" })}
+          options={[{ value: "true", label: "Ativo" }, { value: "false", label: "Inativo" }]}
+        />
       </div>
       <div className="flex justify-end gap-3 pt-4 border-t border-oak-light">
         <button type="button" onClick={onDone} className="px-5 py-2.5 text-sm font-medium text-oak-dark hover:bg-oak-medium/20 rounded-xl">Cancelar</button>
