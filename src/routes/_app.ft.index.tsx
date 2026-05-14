@@ -34,11 +34,11 @@ function FtList() {
     <div className="space-y-8">
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-3xl font-light tracking-tight">Folgas Trabalhadas</h1>
+          <h1 className="text-3xl font-light tracking-tight">Movimentações Operacionais</h1>
           <p className="text-muted-foreground mt-1">{items.length} lançamentos no total.</p>
         </div>
         <Link to="/ft/novo" className="inline-flex items-center gap-2 bg-oak-dark text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90">
-          <Plus className="size-4" /> Nova FT
+          <Plus className="size-4" /> Nova Movimentação
         </Link>
       </div>
 
