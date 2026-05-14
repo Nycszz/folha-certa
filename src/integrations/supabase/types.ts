@@ -21,15 +21,17 @@ export type Database = {
           data_cancelamento: string | null
           data_ft: string
           data_lancamento: string
+          escala_servico: string | null
+          funcionario_faltante_id: string | null
           funcionario_id: string
           horas_compensadas: number
           horas_trabalhadas: number
           id: string
           lancado_por: string | null
-          motivo: string
+          motivo: string | null
           observacao: string | null
           status: Database["public"]["Enums"]["ft_status"]
-          tipo_folga: string
+          tipo_folga: string | null
           updated_at: string
         }
         Insert: {
@@ -38,15 +40,17 @@ export type Database = {
           data_cancelamento?: string | null
           data_ft: string
           data_lancamento?: string
+          escala_servico?: string | null
+          funcionario_faltante_id?: string | null
           funcionario_id: string
           horas_compensadas?: number
           horas_trabalhadas?: number
           id?: string
           lancado_por?: string | null
-          motivo: string
+          motivo?: string | null
           observacao?: string | null
           status?: Database["public"]["Enums"]["ft_status"]
-          tipo_folga: string
+          tipo_folga?: string | null
           updated_at?: string
         }
         Update: {
@@ -55,18 +59,27 @@ export type Database = {
           data_cancelamento?: string | null
           data_ft?: string
           data_lancamento?: string
+          escala_servico?: string | null
+          funcionario_faltante_id?: string | null
           funcionario_id?: string
           horas_compensadas?: number
           horas_trabalhadas?: number
           id?: string
           lancado_por?: string | null
-          motivo?: string
+          motivo?: string | null
           observacao?: string | null
           status?: Database["public"]["Enums"]["ft_status"]
-          tipo_folga?: string
+          tipo_folga?: string | null
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "ft_funcionario_faltante_id_fkey"
+            columns: ["funcionario_faltante_id"]
+            isOneToOne: false
+            referencedRelation: "funcionarios"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "ft_funcionario_id_fkey"
             columns: ["funcionario_id"]
@@ -121,47 +134,53 @@ export type Database = {
         Row: {
           banco_horas: number
           cargo: string
-          cpf: string
+          cpf: string | null
           created_at: string
-          data_admissao: string
+          data_admissao: string | null
           id: string
           nome: string
+          posto_servico: string | null
           re: string
           setor: string
           status_ativo: boolean
           supervisor: string | null
           turno: string
           updated_at: string
+          usa_banco_horas: boolean
         }
         Insert: {
           banco_horas?: number
           cargo: string
-          cpf: string
+          cpf?: string | null
           created_at?: string
-          data_admissao: string
+          data_admissao?: string | null
           id?: string
           nome: string
+          posto_servico?: string | null
           re: string
           setor: string
           status_ativo?: boolean
           supervisor?: string | null
           turno: string
           updated_at?: string
+          usa_banco_horas?: boolean
         }
         Update: {
           banco_horas?: number
           cargo?: string
-          cpf?: string
+          cpf?: string | null
           created_at?: string
-          data_admissao?: string
+          data_admissao?: string | null
           id?: string
           nome?: string
+          posto_servico?: string | null
           re?: string
           setor?: string
           status_ativo?: boolean
           supervisor?: string | null
           turno?: string
           updated_at?: string
+          usa_banco_horas?: boolean
         }
         Relationships: []
       }
