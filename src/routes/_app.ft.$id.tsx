@@ -34,7 +34,7 @@ function FtDetalhe() {
     const { error } = await supabase.from("ft").update(payload).eq("id", id);
     if (error) toast.error(error.message);
     else {
-      toast.success(`FT ${status.toLowerCase()}`);
+      toast.success(`Movimentação ${status.toLowerCase()}`);
       load();
     }
   }
