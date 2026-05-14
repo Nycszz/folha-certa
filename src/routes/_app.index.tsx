@@ -85,8 +85,8 @@ function Dashboard() {
           </div>
           {recent.length === 0 ? (
             <div className="p-12 text-center text-sm text-muted-foreground">
-              Nenhuma FT registrada ainda.{" "}
-              <Link to="/ft/novo" className="text-oak-dark font-medium hover:underline">Registrar primeira FT</Link>
+              Nenhuma movimentação registrada ainda.{" "}
+              <Link to="/ft/novo" className="text-oak-dark font-medium hover:underline">Registrar primeira movimentação</Link>
             </div>
           ) : (
             <table className="w-full text-left">
