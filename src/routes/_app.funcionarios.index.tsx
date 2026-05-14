@@ -23,7 +23,7 @@ function FuncionariosList() {
   }
 
   const filtered = items.filter(
-    (i) => i.nome.toLowerCase().includes(q.toLowerCase()) || i.re.includes(q) || i.cpf.includes(q)
+    (i) => i.nome.toLowerCase().includes(q.toLowerCase()) || (i.re ?? "").includes(q)
   );
 
   async function handleDelete(id: string) {
