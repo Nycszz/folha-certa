@@ -2,6 +2,7 @@ import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
 import { LayoutDashboard, Users, ClipboardList, CheckCircle2, FileBarChart, History, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
+import logoGrupoMc from "@/assets/logo-grupo-mc.png";
 
 const nav = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -27,9 +28,7 @@ export function AppLayout() {
       <aside className="w-72 bg-oak-light border-r border-oak-medium flex flex-col shrink-0">
         <div className="p-8">
           <div className="flex items-center gap-3">
-            <div className="size-10 bg-oak-dark rounded-xl flex items-center justify-center text-primary-foreground font-semibold text-sm italic">
-              MO
-            </div>
+            <img src={logoGrupoMc} alt="Grupo MC" className="size-12 object-contain shrink-0" />
             <div>
               <div className="text-lg font-medium tracking-tight">Movimentação</div>
               <div className="text-[10px] text-oak-dark/60 uppercase tracking-widest">Operacional</div>
