@@ -54,7 +54,7 @@ function FuncionariosList() {
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Buscar por nome, RE ou CPF..."
+            placeholder="Buscar por nome ou RE..."
             className="flex-1 bg-transparent text-sm focus:outline-none"
           />
         </div>
