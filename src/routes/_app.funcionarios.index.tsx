@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Search } from "lucide-react";
-import { format } from "date-fns";
+
 
 export const Route = createFileRoute("/_app/funcionarios/")({
   component: FuncionariosList,
