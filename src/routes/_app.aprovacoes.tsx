@@ -18,7 +18,7 @@ function Aprovacoes() {
 
   useEffect(() => { load(); }, []);
   async function load() {
-    const { data } = await supabase.from("ft").select("*, funcionario:funcionarios(nome, cargo, re)").eq("status", "PENDENTE").order("data_lancamento");
+    const { data } = await supabase.from("ft").select("*, funcionario:funcionarios!ft_funcionario_id_fkey(nome, cargo, re)").eq("status", "PENDENTE").order("data_lancamento");
     setItems(data ?? []);
   }
 

@@ -55,7 +55,7 @@ function Dashboard() {
 
     const { data: rec } = await supabase
       .from("ft")
-      .select("id, data_ft, horas_trabalhadas, status, motivo, funcionario:funcionarios(nome, cargo)")
+      .select("id, data_ft, horas_trabalhadas, status, motivo, funcionario:funcionarios!ft_funcionario_id_fkey(nome, cargo)")
       .order("created_at", { ascending: false })
       .limit(5);
     setRecent(rec ?? []);

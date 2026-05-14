@@ -15,7 +15,7 @@ function Historico() {
   async function load() {
     const { data } = await supabase
       .from("ft")
-      .select("*, funcionario:funcionarios(nome, re)")
+      .select("*, funcionario:funcionarios!ft_funcionario_id_fkey(nome, re)")
       .in("status", ["CANCELADA", "NEGADA"])
       .order("updated_at", { ascending: false });
     setItems(data ?? []);
