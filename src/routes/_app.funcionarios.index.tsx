@@ -65,7 +65,7 @@ function FuncionariosList() {
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
-                <Th>Nome</Th><Th>RE</Th><Th>Cargo</Th><Th>Setor</Th><Th>Turno</Th><Th>Admissão</Th><Th>Status</Th><Th>Ações</Th>
+                <Th>Nome</Th><Th>RE</Th><Th>Cargo</Th><Th>Posto</Th><Th>Turno</Th><Th>Banco horas</Th><Th>Status</Th><Th>Ações</Th>
               </tr>
             </thead>
             <tbody className="divide-y divide-oak-light">
