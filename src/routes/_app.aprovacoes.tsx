@@ -26,7 +26,7 @@ function Aprovacoes() {
     const { error } = await supabase.from("ft").update({ status, aprovado_por: user?.id }).eq("id", id);
     if (error) toast.error(error.message);
     else {
-      toast.success(`FT ${status.toLowerCase()}`);
+      toast.success(`Movimentação ${status.toLowerCase()}`);
       load();
     }
   }
