@@ -2,36 +2,36 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-interface Props {
-  initial?: any;
-  onDone: () => void;
-}
+const CARGOS = ["Vigilante", "Porteiro", "ASG", "Recepcionista", "Manutencista", "Freelancer"];
+const VALORES: Record<string, number> = {
+  Vigilante: 200, Porteiro: 150, ASG: 130, Recepcionista: 150, Manutencista: 130, Freelancer: 150,
+};
+
+interface Props { initial?: any; onDone: () => void; }
 
 export function FuncionarioForm({ initial, onDone }: Props) {
   const [form, setForm] = useState({
     nome: initial?.nome ?? "",
     re: initial?.re ?? "",
-    cargo: initial?.cargo ?? "",
-    posto_servico: initial?.posto_servico ?? "",
+    cargo: initial?.cargo ?? "Vigilante",
+    posto_servico: initial?.posto_servico ?? "Vigilante",
     supervisor: initial?.supervisor ?? "",
     turno: initial?.turno ?? "Manhã",
     usa_banco_horas: initial?.usa_banco_horas ?? false,
-    status_ativo: initial?.status_ativo ?? true,
+    status: initial?.status ?? "ativo",
   });
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    const payload: any = { ...form, status_ativo: form.status === "ativo" };
     const { error } = initial
-      ? await supabase.from("funcionarios").update(form).eq("id", initial.id)
-      : await supabase.from("funcionarios").insert(form as any);
+      ? await supabase.from("funcionarios").update(payload).eq("id", initial.id)
+      : await supabase.from("funcionarios").insert(payload);
     setLoading(false);
     if (error) toast.error(error.message);
-    else {
-      toast.success(initial ? "Funcionário atualizado" : "Funcionário cadastrado");
-      onDone();
-    }
+    else { toast.success(initial ? "Funcionário atualizado" : "Funcionário cadastrado"); onDone(); }
   }
 
   const set = (k: string) => (e: any) => setForm({ ...form, [k]: e.target.value });
@@ -41,22 +41,19 @@ export function FuncionarioForm({ initial, onDone }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <Field label="Nome completo" value={form.nome} onChange={set("nome")} required />
         <Field label="RE" value={form.re} onChange={set("re")} required />
-        <Field label="Cargo" value={form.cargo} onChange={set("cargo")} required />
-        <Field label="Posto de serviço" value={form.posto_servico} onChange={set("posto_servico")} required />
+        <SelectField label="Cargo" value={form.cargo} onChange={set("cargo")} options={CARGOS} />
+        <SelectField label="Posto de serviço" value={form.posto_servico} onChange={set("posto_servico")} options={CARGOS} />
         <Field label="Supervisor" value={form.supervisor} onChange={set("supervisor")} />
         <SelectField label="Turno" value={form.turno} onChange={set("turno")} options={["Manhã", "Tarde", "Noite", "Integral"]} />
-        <SelectField
-          label="Banco de horas"
-          value={form.usa_banco_horas ? "true" : "false"}
+        <SelectField label="Banco de horas" value={form.usa_banco_horas ? "true" : "false"}
           onChange={(e: any) => setForm({ ...form, usa_banco_horas: e.target.value === "true" })}
-          options={[{ value: "true", label: "Sim" }, { value: "false", label: "Não" }]}
-        />
-        <SelectField
-          label="Status"
-          value={String(form.status_ativo)}
-          onChange={(e: any) => setForm({ ...form, status_ativo: e.target.value === "true" })}
-          options={[{ value: "true", label: "Ativo" }, { value: "false", label: "Inativo" }]}
-        />
+          options={[{ value: "true", label: "Sim" }, { value: "false", label: "Não" }]} />
+        <SelectField label="Status" value={form.status} onChange={set("status")}
+          options={[{ value: "ativo", label: "Ativo" }, { value: "ferias", label: "De férias" }]} />
+        <div className="md:col-span-2 bg-sand/50 rounded-xl p-4 text-sm">
+          <span className="text-oak-dark/60">Valor fixo da folga trabalhada para </span>
+          <strong>{form.cargo}</strong>: <strong>R$ {VALORES[form.cargo]?.toFixed(2)}</strong>
+        </div>
       </div>
       <div className="flex justify-end gap-3 pt-4 border-t border-oak-light">
         <button type="button" onClick={onDone} className="px-5 py-2.5 text-sm font-medium text-oak-dark hover:bg-oak-medium/20 rounded-xl">Cancelar</button>
@@ -68,18 +65,12 @@ export function FuncionarioForm({ initial, onDone }: Props) {
   );
 }
 
-function Field({ label, value, onChange, type = "text", required, step }: any) {
+function Field({ label, value, onChange, type = "text", required }: any) {
   return (
     <div>
       <label className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">{label}</label>
-      <input
-        type={type}
-        step={step}
-        required={required}
-        value={value ?? ""}
-        onChange={onChange}
-        className="mt-2 w-full px-4 py-2.5 bg-sand rounded-xl text-sm border-none focus:outline-none focus:ring-2 focus:ring-oak-dark/20"
-      />
+      <input type={type} required={required} value={value ?? ""} onChange={onChange}
+        className="mt-2 w-full px-4 py-2.5 bg-sand rounded-xl text-sm border-none focus:outline-none focus:ring-2 focus:ring-oak-dark/20" />
     </div>
   );
 }
