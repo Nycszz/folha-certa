@@ -23,7 +23,7 @@ export function FuncionarioPicker({ label, value, onChange, required, excludeId 
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    supabase.from("funcionarios").select("id, nome, re").eq("status_ativo", true).order("nome")
+    supabase.from("funcionarios").select("id, nome, re").order("nome")
       .then(({ data }) => setList((data ?? []) as Funcionario[]));
   }, []);
 

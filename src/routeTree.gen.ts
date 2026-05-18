@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AppRelatoriosRouteImport } from './routes/_app.relatorios'
@@ -26,11 +25,6 @@ import { Route as AppFtIdRouteImport } from './routes/_app.ft.$id'
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CadastroRoute = CadastroRouteImport.update({
-  id: '/cadastro',
-  path: '/cadastro',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -90,7 +84,6 @@ const AppFtIdRoute = AppFtIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
-  '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
   '/aprovacoes': typeof AppAprovacoesRoute
   '/historico': typeof AppHistoricoRoute
@@ -103,7 +96,6 @@ export interface FileRoutesByFullPath {
   '/funcionarios/': typeof AppFuncionariosIndexRoute
 }
 export interface FileRoutesByTo {
-  '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
   '/aprovacoes': typeof AppAprovacoesRoute
   '/historico': typeof AppHistoricoRoute
@@ -119,7 +111,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
-  '/cadastro': typeof CadastroRoute
   '/login': typeof LoginRoute
   '/_app/aprovacoes': typeof AppAprovacoesRoute
   '/_app/historico': typeof AppHistoricoRoute
@@ -136,7 +127,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/cadastro'
     | '/login'
     | '/aprovacoes'
     | '/historico'
@@ -149,7 +139,6 @@ export interface FileRouteTypes {
     | '/funcionarios/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/cadastro'
     | '/login'
     | '/aprovacoes'
     | '/historico'
@@ -164,7 +153,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_app'
-    | '/cadastro'
     | '/login'
     | '/_app/aprovacoes'
     | '/_app/historico'
@@ -180,7 +168,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
-  CadastroRoute: typeof CadastroRoute
   LoginRoute: typeof LoginRoute
 }
 
@@ -191,13 +178,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cadastro': {
-      id: '/cadastro'
-      path: '/cadastro'
-      fullPath: '/cadastro'
-      preLoaderRoute: typeof CadastroRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -310,18 +290,8 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
-  CadastroRoute: CadastroRoute,
   LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

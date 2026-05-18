@@ -1,20 +1,31 @@
 import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
-import { useAuth } from "@/lib/auth";
-import { LayoutDashboard, Users, ClipboardList, CheckCircle2, FileBarChart, History, LogOut } from "lucide-react";
+import { useAuth, type Role } from "@/lib/auth";
+import { LayoutDashboard, Users, ClipboardList, CheckCircle2, FileBarChart, History, LogOut, ShieldCheck, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logoGrupoMc from "@/assets/logo-grupo-mc.png";
 
-const nav = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/funcionarios", label: "Funcionários", icon: Users },
-  { to: "/ft", label: "Movimentações", icon: ClipboardList },
-  { to: "/aprovacoes", label: "Aprovações", icon: CheckCircle2 },
-  { to: "/relatorios", label: "Relatórios", icon: FileBarChart },
-  { to: "/historico", label: "Histórico", icon: History },
+type NavItem = { to: string; label: string; icon: any; roles: Role[] };
+
+const nav: NavItem[] = [
+  { to: "/", label: "Dashboard", icon: LayoutDashboard, roles: ["gestor"] },
+  { to: "/funcionarios", label: "Funcionários", icon: Users, roles: ["gestor", "apontamento"] },
+  { to: "/funcionarios/importar", label: "Importar funcionários", icon: Upload, roles: ["gestor"] },
+  { to: "/ft", label: "Movimentações", icon: ClipboardList, roles: ["gestor", "apontamento"] },
+  { to: "/ft/novo", label: "Nova movimentação", icon: ClipboardList, roles: ["supervisor"] },
+  { to: "/aprovacoes", label: "Aprovações", icon: CheckCircle2, roles: ["gestor"] },
+  { to: "/relatorios", label: "Relatórios", icon: FileBarChart, roles: ["gestor", "apontamento"] },
+  { to: "/historico", label: "Histórico", icon: History, roles: ["gestor", "apontamento"] },
+  { to: "/usuarios", label: "Usuários", icon: ShieldCheck, roles: ["gestor"] },
 ];
 
+const roleLabel: Record<Role, string> = {
+  gestor: "Gestor",
+  apontamento: "Apontamento",
+  supervisor: "Supervisor",
+};
+
 export function AppLayout() {
-  const { user, signOut, roles } = useAuth();
+  const { user, signOut, role, username } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -22,6 +33,8 @@ export function AppLayout() {
     await signOut();
     navigate({ to: "/login" });
   };
+
+  const allowed = nav.filter((n) => !role || n.roles.includes(role));
 
   return (
     <div className="flex min-h-dvh bg-canvas">
@@ -37,10 +50,8 @@ export function AppLayout() {
         </div>
 
         <nav className="flex-1 px-4 space-y-1">
-          <div className="pb-3 px-4 text-[10px] font-bold text-oak-dark/60 uppercase tracking-[0.2em]">
-            Menu
-          </div>
-          {nav.map((item) => {
+          <div className="pb-3 px-4 text-[10px] font-bold text-oak-dark/60 uppercase tracking-[0.2em]">Menu</div>
+          {allowed.map((item) => {
             const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
             const Icon = item.icon;
             return (
@@ -49,9 +60,7 @@ export function AppLayout() {
                 to={item.to}
                 className={cn(
                   "flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium text-sm transition-colors",
-                  active
-                    ? "bg-card text-oak-dark shadow-sm"
-                    : "text-oak-dark/70 hover:bg-card/50"
+                  active ? "bg-card text-oak-dark shadow-sm" : "text-oak-dark/70 hover:bg-card/50"
                 )}
               >
                 <Icon className="size-4" />
@@ -62,11 +71,6 @@ export function AppLayout() {
         </nav>
 
         <div className="p-6 space-y-3">
-          <div className="bg-oak-medium/30 p-4 rounded-2xl">
-            <p className="text-xs text-oak-dark font-medium leading-relaxed">
-              O descanso é essencial para uma equipe saudável e produtiva.
-            </p>
-          </div>
           <button
             onClick={handleSignOut}
             className="flex items-center gap-2 w-full px-4 py-2 text-xs font-medium text-oak-dark/70 hover:text-oak-dark transition-colors"
@@ -81,13 +85,13 @@ export function AppLayout() {
           <div className="flex-1" />
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <p className="text-sm font-medium">{user?.email}</p>
+              <p className="text-sm font-medium">{username ?? user?.email}</p>
               <p className="text-xs text-oak-dark/60 uppercase tracking-wider">
-                {roles.includes("gestor") || roles.includes("admin") ? "Gestor" : "RH"}
+                {role ? roleLabel[role] : ""}
               </p>
             </div>
             <div className="size-10 rounded-full bg-oak-medium flex items-center justify-center text-oak-dark font-semibold">
-              {user?.email?.[0]?.toUpperCase() ?? "U"}
+              {(username ?? user?.email ?? "U")[0]?.toUpperCase()}
             </div>
           </div>
         </header>
