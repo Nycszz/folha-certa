@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, redirect, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, redirect } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,17 +16,17 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const { signIn } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await signIn(email, password);
+    const { error } = await signIn(username, password);
     setLoading(false);
     if (error) {
-      toast.error(error.message);
+      toast.error("Usuário ou senha inválidos");
     } else {
       toast.success("Bem-vindo!");
       navigate({ to: "/" });
@@ -39,20 +39,21 @@ function LoginPage() {
         <div className="text-center mb-10">
           <img src={logoGrupoMc} alt="Grupo MC" className="mx-auto size-20 object-contain mb-4" />
           <h1 className="text-3xl font-light tracking-tight">Movimentação Operacional</h1>
-          <p className="text-sm text-muted-foreground mt-2">Sistema de gestão operacional</p>
+          <p className="text-sm text-muted-foreground mt-2">Acesso restrito</p>
         </div>
 
         <div className="bg-card border border-oak-light rounded-3xl p-8 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">Email</label>
+              <label className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">Usuário</label>
               <input
-                type="email"
+                type="text"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="mt-2 w-full px-4 py-3 bg-sand rounded-xl text-sm border-none focus:outline-none focus:ring-2 focus:ring-oak-dark/20"
-                placeholder="seu@email.com"
+                placeholder="seu usuário"
               />
             </div>
             <div>
@@ -60,7 +61,7 @@ function LoginPage() {
               <input
                 type="password"
                 required
-                minLength={6}
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-2 w-full px-4 py-3 bg-sand rounded-xl text-sm border-none focus:outline-none focus:ring-2 focus:ring-oak-dark/20"
@@ -75,12 +76,6 @@ function LoginPage() {
               {loading ? "Entrando..." : "Entrar"}
             </button>
           </form>
-          <p className="text-center text-xs text-muted-foreground mt-6">
-            Não tem conta?{" "}
-            <Link to="/cadastro" className="text-oak-dark font-medium hover:underline">
-              Criar conta
-            </Link>
-          </p>
         </div>
       </div>
     </div>
