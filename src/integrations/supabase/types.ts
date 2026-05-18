@@ -30,9 +30,11 @@ export type Database = {
           lancado_por: string | null
           motivo: string | null
           observacao: string | null
+          posto_falta: string | null
           status: Database["public"]["Enums"]["ft_status"]
           tipo_folga: string | null
           updated_at: string
+          valor_pago: number
         }
         Insert: {
           aprovado_por?: string | null
@@ -49,9 +51,11 @@ export type Database = {
           lancado_por?: string | null
           motivo?: string | null
           observacao?: string | null
+          posto_falta?: string | null
           status?: Database["public"]["Enums"]["ft_status"]
           tipo_folga?: string | null
           updated_at?: string
+          valor_pago?: number
         }
         Update: {
           aprovado_por?: string | null
@@ -68,9 +72,11 @@ export type Database = {
           lancado_por?: string | null
           motivo?: string | null
           observacao?: string | null
+          posto_falta?: string | null
           status?: Database["public"]["Enums"]["ft_status"]
           tipo_folga?: string | null
           updated_at?: string
+          valor_pago?: number
         }
         Relationships: [
           {
@@ -142,6 +148,7 @@ export type Database = {
           posto_servico: string | null
           re: string
           setor: string | null
+          status: string
           status_ativo: boolean
           supervisor: string | null
           turno: string
@@ -159,6 +166,7 @@ export type Database = {
           posto_servico?: string | null
           re: string
           setor?: string | null
+          status?: string
           status_ativo?: boolean
           supervisor?: string | null
           turno: string
@@ -176,6 +184,7 @@ export type Database = {
           posto_servico?: string | null
           re?: string
           setor?: string | null
+          status?: string
           status_ativo?: boolean
           supervisor?: string | null
           turno?: string
@@ -186,25 +195,31 @@ export type Database = {
       }
       profiles: {
         Row: {
+          ativo: boolean
           created_at: string
           email: string
           id: string
           nome: string
           updated_at: string
+          username: string | null
         }
         Insert: {
+          ativo?: boolean
           created_at?: string
           email: string
           id: string
           nome: string
           updated_at?: string
+          username?: string | null
         }
         Update: {
+          ativo?: boolean
           created_at?: string
           email?: string
           id?: string
           nome?: string
           updated_at?: string
+          username?: string | null
         }
         Relationships: []
       }
@@ -241,6 +256,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      valor_folga_por_cargo: { Args: { _cargo: string }; Returns: number }
     }
     Enums: {
       app_role: "admin" | "gestor" | "rh" | "apontamento" | "supervisor"
