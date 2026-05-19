@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { useAuth, type Role } from "@/lib/auth";
-import { LayoutDashboard, Users, ClipboardList, CheckCircle2, FileBarChart, History, LogOut, ShieldCheck, Upload } from "lucide-react";
+import { LayoutDashboard, Users, ClipboardList, CheckCircle2, FileBarChart, History, LogOut, ShieldCheck, ScrollText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logoGrupoMc from "@/assets/logo-grupo-mc.png";
 
@@ -9,13 +9,13 @@ type NavItem = { to: string; label: string; icon: any; roles: Role[] };
 const nav: NavItem[] = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, roles: ["gestor"] },
   { to: "/funcionarios", label: "Funcionários", icon: Users, roles: ["gestor", "apontamento"] },
-  { to: "/funcionarios/importar", label: "Importar funcionários", icon: Upload, roles: ["gestor"] },
   { to: "/ft", label: "Movimentações", icon: ClipboardList, roles: ["gestor", "apontamento"] },
   { to: "/ft/novo", label: "Nova movimentação", icon: ClipboardList, roles: ["supervisor"] },
   { to: "/aprovacoes", label: "Aprovações", icon: CheckCircle2, roles: ["gestor"] },
   { to: "/relatorios", label: "Relatórios", icon: FileBarChart, roles: ["gestor", "apontamento"] },
   { to: "/historico", label: "Histórico", icon: History, roles: ["gestor", "apontamento"] },
   { to: "/usuarios", label: "Usuários", icon: ShieldCheck, roles: ["gestor"] },
+  { to: "/auditoria", label: "Auditoria", icon: ScrollText, roles: ["gestor"] },
 ];
 
 const roleLabel: Record<Role, string> = {
