@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          description: string | null
+          entity_id: string | null
+          entity_type: string
+          id: string
+          new_data: Json | null
+          observacao: string | null
+          old_data: Json | null
+          role: string | null
+          user_id: string | null
+          username: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          description?: string | null
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          new_data?: Json | null
+          observacao?: string | null
+          old_data?: Json | null
+          role?: string | null
+          user_id?: string | null
+          username?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          description?: string | null
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          new_data?: Json | null
+          observacao?: string | null
+          old_data?: Json | null
+          role?: string | null
+          user_id?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
       ft: {
         Row: {
           aprovado_por: string | null
@@ -255,6 +300,18 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      log_audit: {
+        Args: {
+          _action: string
+          _description?: string
+          _entity_id: string
+          _entity_type: string
+          _new?: Json
+          _obs?: string
+          _old?: Json
+        }
+        Returns: undefined
       }
       valor_folga_por_cargo: { Args: { _cargo: string }; Returns: number }
     }
