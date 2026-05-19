@@ -139,8 +139,8 @@ function AuditoriaPage() {
             </thead>
             <tbody className="divide-y divide-oak-light">
               {filtered.map((l) => (
-                <>
-                  <tr key={l.id} className="hover:bg-sand/20 cursor-pointer" onClick={() => setExpanded(expanded === l.id ? null : l.id)}>
+                <React.Fragment key={l.id}>
+                  <tr className="hover:bg-sand/20 cursor-pointer" onClick={() => setExpanded(expanded === l.id ? null : l.id)}>
                     <td className="px-6 py-3 text-xs tabular-nums">{format(new Date(l.created_at), "dd/MM/yy HH:mm:ss")}</td>
                     <td className="px-6 py-3 text-sm font-medium">{l.username ?? "—"}</td>
                     <td className="px-6 py-3 text-xs uppercase tracking-wider">{l.role ?? "—"}</td>
@@ -156,7 +156,7 @@ function AuditoriaPage() {
                       </div>
                     </td></tr>
                   )}
-                </>
+                </React.Fragment>
               ))}
             </tbody>
           </table>
