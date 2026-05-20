@@ -2,31 +2,9 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { assertGestor, getActor, logAudit } from "./admin.server";
 
-async function assertGestor(supabase: any, userId: string) {
-  const { data } = await supabase.from("user_roles").select("role").eq("user_id", userId);
-  const roles = (data ?? []).map((r: any) => r.role);
-  if (!roles.includes("gestor")) throw new Error("Apenas Gestor pode executar esta ação.");
-}
-
-async function logAudit(action: string, entity: string, entityId: string, description: string, actor: { id: string; username?: string | null; role?: string | null }, extra?: Record<string, any>) {
-  await supabaseAdmin.from("audit_logs").insert({
-    user_id: actor.id,
-    username: actor.username ?? null,
-    role: actor.role ?? null,
-    action,
-    entity_type: entity,
-    entity_id: entityId,
-    description,
-    ...extra,
-  });
-}
-
-async function getActor(userId: string) {
-  const { data: prof } = await supabaseAdmin.from("profiles").select("username").eq("id", userId).maybeSingle();
-  const { data: r } = await supabaseAdmin.from("user_roles").select("role").eq("user_id", userId).maybeSingle();
-  return { id: userId, username: prof?.username ?? null, role: (r as any)?.role ?? null };
-}
+const RoleEnum = z.enum(["gestor", "apontamento", "supervisor"]);
 
 export const listUsers = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -41,8 +19,6 @@ export const listUsers = createServerFn({ method: "GET" })
     (roles ?? []).forEach((r: any) => roleMap.set(r.user_id, r.role));
     return (profiles ?? []).map((p: any) => ({ ...p, role: roleMap.get(p.id) ?? null }));
   });
-
-const RoleEnum = z.enum(["gestor", "apontamento", "supervisor"]);
 
 export const createUser = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -67,7 +43,6 @@ export const createUser = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
 
     const uid = created.user!.id;
-    // Garantir profile + role (caso o trigger handle_new_user não tenha criado)
     await supabaseAdmin.from("profiles").upsert({ id: uid, nome: data.nome, email, username: data.username.toLowerCase(), ativo: true });
     await supabaseAdmin.from("user_roles").upsert({ user_id: uid, role: data.role }, { onConflict: "user_id,role" });
 
