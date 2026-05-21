@@ -71,12 +71,26 @@ function ImportarFuncionarios() {
       const errs: string[] = [];
 
       wb.worksheets.forEach((ws) => {
-        // find header row (first row with text in multiple cells)
-        let headerRowIdx = 1;
-        for (let i = 1; i <= Math.min(10, ws.rowCount); i++) {
-          const r = ws.getRow(i);
-          const vals = (r.values as any[]).slice(1).map((v) => (v == null ? "" : String(v)));
-          if (vals.filter((v) => v.trim()).length >= 3) { headerRowIdx = i; break; }
+        // empresa pode estar na primeira(s) linha(s) (cabeçalho do relatório)
+        let empresaHeader = "";
+        for (let i = 1; i <= Math.min(3, ws.rowCount); i++) {
+          const v = ws.getRow(i).getCell(1).value;
+          if (v && String(v).trim().length > 3) { empresaHeader = String(v).trim(); break; }
+        }
+
+        // localizar a linha real de cabeçalho: precisa ter Nome + Código/RE + Cargo
+        const norm = (s: any) => String(s ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+        let headerRowIdx = -1;
+        for (let i = 1; i <= Math.min(25, ws.rowCount); i++) {
+          const vals = (ws.getRow(i).values as any[]).slice(1).map(norm);
+          const hasNome = vals.some((v) => v === "nome" || v.includes("nome"));
+          const hasCargo = vals.some((v) => v === "cargo" || v.includes("cargo") || v.includes("funcao"));
+          const hasCod = vals.some((v) => v === "codigo" || v.includes("codigo") || v === "re" || v.includes("matricula"));
+          if (hasNome && hasCargo && hasCod) { headerRowIdx = i; break; }
+        }
+        if (headerRowIdx < 0) {
+          errs.push(`Aba "${ws.name}": não foi possível localizar a linha de cabeçalho (Nome/Código/Cargo).`);
+          return;
         }
         const headerRow = ws.getRow(headerRowIdx);
         const headers = (headerRow.values as any[]).slice(1).map((v) => (v == null ? null : String(v)));
@@ -87,11 +101,6 @@ function ImportarFuncionarios() {
         const idxCpf = findCol(headers, ["cpf"]);
         const idxAdm = findCol(headers, ["admissao", "admissão"]);
         const idxEmp = findCol(headers, ["empresa", "filial"]);
-
-        if (idxNome < 0 || idxCodigo < 0 || idxCargo < 0) {
-          errs.push(`Aba "${ws.name}": faltam colunas obrigatórias (Nome, Código/RE, Cargo).`);
-          return;
-        }
 
         for (let i = headerRowIdx + 1; i <= ws.rowCount; i++) {
           const r = ws.getRow(i);
