@@ -118,7 +118,7 @@ function ImportarFuncionarios() {
             continue;
           }
 
-          const empresa = get(idxEmp) || ws.name;
+          const empresa = get(idxEmp) || empresaHeader || ws.name;
           const cpfRaw = get(idxCpf).replace(/\D/g, "");
           const admRaw = idxAdm >= 0 ? vals[idxAdm] : null;
           let dataAdm: string | null = null;
