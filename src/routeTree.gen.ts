@@ -20,6 +20,7 @@ import { Route as AppAprovacoesRouteImport } from './routes/_app.aprovacoes'
 import { Route as AppFuncionariosIndexRouteImport } from './routes/_app.funcionarios.index'
 import { Route as AppFtIndexRouteImport } from './routes/_app.ft.index'
 import { Route as AppFuncionariosNovoRouteImport } from './routes/_app.funcionarios.novo'
+import { Route as AppFuncionariosImportarRouteImport } from './routes/_app.funcionarios.importar'
 import { Route as AppFuncionariosIdRouteImport } from './routes/_app.funcionarios.$id'
 import { Route as AppFtNovoRouteImport } from './routes/_app.ft.novo'
 import { Route as AppFtIdRouteImport } from './routes/_app.ft.$id'
@@ -78,6 +79,11 @@ const AppFuncionariosNovoRoute = AppFuncionariosNovoRouteImport.update({
   path: '/funcionarios/novo',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFuncionariosImportarRoute = AppFuncionariosImportarRouteImport.update({
+  id: '/funcionarios/importar',
+  path: '/funcionarios/importar',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFuncionariosIdRoute = AppFuncionariosIdRouteImport.update({
   id: '/funcionarios/$id',
   path: '/funcionarios/$id',
@@ -105,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/ft/$id': typeof AppFtIdRoute
   '/ft/novo': typeof AppFtNovoRoute
   '/funcionarios/$id': typeof AppFuncionariosIdRoute
+  '/funcionarios/importar': typeof AppFuncionariosImportarRoute
   '/funcionarios/novo': typeof AppFuncionariosNovoRoute
   '/ft/': typeof AppFtIndexRoute
   '/funcionarios/': typeof AppFuncionariosIndexRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/ft/$id': typeof AppFtIdRoute
   '/ft/novo': typeof AppFtNovoRoute
   '/funcionarios/$id': typeof AppFuncionariosIdRoute
+  '/funcionarios/importar': typeof AppFuncionariosImportarRoute
   '/funcionarios/novo': typeof AppFuncionariosNovoRoute
   '/ft': typeof AppFtIndexRoute
   '/funcionarios': typeof AppFuncionariosIndexRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/_app/ft/$id': typeof AppFtIdRoute
   '/_app/ft/novo': typeof AppFtNovoRoute
   '/_app/funcionarios/$id': typeof AppFuncionariosIdRoute
+  '/_app/funcionarios/importar': typeof AppFuncionariosImportarRoute
   '/_app/funcionarios/novo': typeof AppFuncionariosNovoRoute
   '/_app/ft/': typeof AppFtIndexRoute
   '/_app/funcionarios/': typeof AppFuncionariosIndexRoute
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/ft/$id'
     | '/ft/novo'
     | '/funcionarios/$id'
+    | '/funcionarios/importar'
     | '/funcionarios/novo'
     | '/ft/'
     | '/funcionarios/'
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/ft/$id'
     | '/ft/novo'
     | '/funcionarios/$id'
+    | '/funcionarios/importar'
     | '/funcionarios/novo'
     | '/ft'
     | '/funcionarios'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/_app/ft/$id'
     | '/_app/ft/novo'
     | '/_app/funcionarios/$id'
+    | '/_app/funcionarios/importar'
     | '/_app/funcionarios/novo'
     | '/_app/ft/'
     | '/_app/funcionarios/'
@@ -274,6 +286,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFuncionariosNovoRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/funcionarios/importar': {
+      id: '/_app/funcionarios/importar'
+      path: '/funcionarios/importar'
+      fullPath: '/funcionarios/importar'
+      preLoaderRoute: typeof AppFuncionariosImportarRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/funcionarios/$id': {
       id: '/_app/funcionarios/$id'
       path: '/funcionarios/$id'
@@ -308,6 +327,7 @@ interface AppRouteChildren {
   AppFtIdRoute: typeof AppFtIdRoute
   AppFtNovoRoute: typeof AppFtNovoRoute
   AppFuncionariosIdRoute: typeof AppFuncionariosIdRoute
+  AppFuncionariosImportarRoute: typeof AppFuncionariosImportarRoute
   AppFuncionariosNovoRoute: typeof AppFuncionariosNovoRoute
   AppFtIndexRoute: typeof AppFtIndexRoute
   AppFuncionariosIndexRoute: typeof AppFuncionariosIndexRoute
@@ -323,6 +343,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppFtIdRoute: AppFtIdRoute,
   AppFtNovoRoute: AppFtNovoRoute,
   AppFuncionariosIdRoute: AppFuncionariosIdRoute,
+  AppFuncionariosImportarRoute: AppFuncionariosImportarRoute,
   AppFuncionariosNovoRoute: AppFuncionariosNovoRoute,
   AppFtIndexRoute: AppFtIndexRoute,
   AppFuncionariosIndexRoute: AppFuncionariosIndexRoute,
@@ -337,13 +358,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

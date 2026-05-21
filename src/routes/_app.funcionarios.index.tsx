@@ -43,9 +43,16 @@ function FuncionariosList() {
           <h1 className="text-3xl font-light tracking-tight">Funcionários</h1>
           <p className="text-muted-foreground mt-1">{items.length} cadastrados.</p>
         </div>
-        <Link to="/funcionarios/novo" className="inline-flex items-center gap-2 bg-oak-dark text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90">
-          <Plus className="size-4" /> Novo funcionário
-        </Link>
+        <div className="flex gap-2">
+          {isGestor && (
+            <Link to="/funcionarios/importar" className="inline-flex items-center gap-2 bg-oak-medium/30 text-oak-dark px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-oak-medium/50">
+              Importar XLSX
+            </Link>
+          )}
+          <Link to="/funcionarios/novo" className="inline-flex items-center gap-2 bg-oak-dark text-primary-foreground px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90">
+            <Plus className="size-4" /> Novo funcionário
+          </Link>
+        </div>
       </div>
 
       <div className="bg-card border border-oak-light rounded-3xl overflow-hidden">
