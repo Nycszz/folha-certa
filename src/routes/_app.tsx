@@ -21,8 +21,8 @@ function AppGuard() {
         setReady(true);
       }
     });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, sess) => {
-      if (!sess) window.location.replace("/login");
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT") window.location.replace("/login");
     });
     return () => {
       mounted = false;
