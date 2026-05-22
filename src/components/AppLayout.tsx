@@ -25,7 +25,7 @@ const roleLabel: Record<Role, string> = {
 };
 
 export function AppLayout() {
-  const { user, signOut, role, username } = useAuth();
+  const { user, signOut, role, username, loading } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -34,7 +34,10 @@ export function AppLayout() {
     navigate({ to: "/login" });
   };
 
-  const allowed = nav.filter((n) => !role || n.roles.includes(role));
+  const allowed = nav.filter((n) => role && n.roles.includes(role));
+  const homePath = allowed[0]?.to ?? "/login";
+
+  if (loading) return null;
 
   return (
     <div className="flex min-h-dvh bg-canvas">
@@ -51,7 +54,9 @@ export function AppLayout() {
 
         <nav className="flex-1 px-4 space-y-1">
           <div className="pb-3 px-4 text-[10px] font-bold text-oak-dark/60 uppercase tracking-[0.2em]">Menu</div>
-          {allowed.map((item) => {
+          {allowed.length === 0 ? (
+            <div className="px-4 py-3 text-xs text-oak-dark/60">Sem permissões liberadas para este usuário.</div>
+          ) : allowed.map((item) => {
             const active = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
             const Icon = item.icon;
             return (
@@ -97,9 +102,23 @@ export function AppLayout() {
         </header>
 
         <div className="flex-1 p-10 overflow-y-auto">
-          <Outlet />
+          {role && allowed.length > 0 ? <Outlet /> : <NoAccess onLogout={handleSignOut} />}
         </div>
       </main>
+    </div>
+  );
+}
+
+function NoAccess({ onLogout }: { onLogout: () => void }) {
+  return (
+    <div className="max-w-xl rounded-2xl border border-oak-light bg-card p-8">
+      <h1 className="text-2xl font-light tracking-tight">Acesso não liberado</h1>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Este usuário está ativo, mas ainda não possui uma permissão válida. Peça ao Gestor para ajustar o acesso na tela de Usuários.
+      </p>
+      <button onClick={onLogout} className="mt-6 inline-flex items-center gap-2 rounded-xl bg-oak-dark px-5 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90">
+        <LogOut className="size-4" /> Sair
+      </button>
     </div>
   );
 }
