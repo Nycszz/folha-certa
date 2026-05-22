@@ -21,7 +21,10 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const INTERNAL_EMAIL_DOMAIN = "interno.local";
-export const usernameToEmail = (u: string) => `${u.trim().toLowerCase()}@${INTERNAL_EMAIL_DOMAIN}`;
+export const usernameToEmail = (u: string) => {
+  const normalized = u.trim().toLowerCase();
+  return normalized.includes("@") ? normalized : `${normalized}@${INTERNAL_EMAIL_DOMAIN}`;
+};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
