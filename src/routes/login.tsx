@@ -1,36 +1,38 @@
-import { createFileRoute, useNavigate, redirect } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect, type FormEvent } from "react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import logoGrupoMc from "@/assets/logo-grupo-mc.png";
 
 export const Route = createFileRoute("/login")({
-  beforeLoad: async () => {
-    const { data } = await supabase.auth.getSession();
-    if (data.session) throw redirect({ to: "/" });
-  },
   component: LoginPage,
 });
 
 function LoginPage() {
   const { signIn } = useAuth();
-  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) window.location.replace("/");
+    });
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     const { error } = await signIn(username, password);
-    setLoading(false);
     if (error) {
+      setLoading(false);
       toast.error("Usuário ou senha inválidos");
-    } else {
-      toast.success("Bem-vindo!");
-      navigate({ to: "/" });
+      return;
     }
+    toast.success("Bem-vindo!");
+    // full reload to ensure session is hydrated before _app beforeLoad runs
+    window.location.assign("/");
   };
 
   return (
