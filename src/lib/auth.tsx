@@ -31,21 +31,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, sess) => {
+    let mounted = true;
+
+    async function applySession(sess: Session | null) {
+      if (!mounted) return;
       setSession(sess);
       setUser(sess?.user ?? null);
-      if (sess?.user) setTimeout(() => loadProfile(sess.user.id), 0);
-      else { setRoles([]); setUsername(null); }
+      if (sess?.user) await loadProfile(sess.user.id);
+      else {
+        setRoles([]);
+        setUsername(null);
+      }
+      if (mounted) setLoading(false);
+    }
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, sess) => {
+      setLoading(true);
+      setTimeout(() => applySession(sess), 0);
     });
 
     supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setUser(data.session?.user ?? null);
-      if (data.session?.user) loadProfile(data.session.user.id);
-      setLoading(false);
+      applySession(data.session);
     });
 
-    return () => sub.subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
   }, []);
 
   async function loadProfile(userId: string) {
