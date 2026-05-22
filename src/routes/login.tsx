@@ -30,8 +30,14 @@ function LoginPage() {
       toast.error("Usuário ou senha inválidos");
       return;
     }
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
+      setLoading(false);
+      toast.error("Login validado, mas a sessão não foi carregada. Tente novamente.");
+      return;
+    }
     toast.success("Bem-vindo!");
-    // full reload to ensure session is hydrated before _app beforeLoad runs
+    // full reload to ensure session is hydrated before protected screens run
     window.location.assign("/");
   };
 
