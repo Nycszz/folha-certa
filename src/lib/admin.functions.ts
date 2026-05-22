@@ -32,23 +32,24 @@ export const createUser = createServerFn({ method: "POST" })
   )
   .handler(async ({ context, data }) => {
     await assertGestor(context.supabase, context.userId);
-    const email = `${data.username.toLowerCase()}@interno.local`;
+    const username = data.username.trim().toLowerCase();
+    const email = `${username}@interno.local`;
 
     const { data: created, error } = await supabaseAdmin.auth.admin.createUser({
       email,
       password: data.password,
       email_confirm: true,
-      user_metadata: { username: data.username.toLowerCase(), nome: data.nome, role: data.role },
+      user_metadata: { username, nome: data.nome, role: data.role },
     });
     if (error) throw new Error(error.message);
 
     const uid = created.user!.id;
-    await supabaseAdmin.from("profiles").upsert({ id: uid, nome: data.nome, email, username: data.username.toLowerCase(), ativo: true });
+    await supabaseAdmin.from("profiles").upsert({ id: uid, nome: data.nome, email, username, ativo: true });
     await supabaseAdmin.from("user_roles").upsert({ user_id: uid, role: data.role }, { onConflict: "user_id,role" });
 
     const actor = await getActor(context.userId);
-    await logAudit("CRIAR_USUARIO", "profiles", uid, `${actor.username ?? "?"} criou o usuário ${data.username} (${data.role})`, actor, {
-      new_data: { username: data.username, nome: data.nome, role: data.role },
+    await logAudit("CRIAR_USUARIO", "profiles", uid, `${actor.username ?? "?"} criou o usuário ${username} (${data.role})`, actor, {
+      new_data: { username, nome: data.nome, role: data.role },
     });
 
     return { id: uid };
