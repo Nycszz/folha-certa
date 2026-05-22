@@ -1,4 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { useAuth, type Role } from "@/lib/auth";
 import { LayoutDashboard, Users, ClipboardList, CheckCircle2, FileBarChart, History, LogOut, ShieldCheck, ScrollText } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -36,6 +37,13 @@ export function AppLayout() {
 
   const allowed = nav.filter((n) => role && n.roles.includes(role));
   const homePath = allowed[0]?.to ?? "/login";
+  const currentAllowed = allowed.some((item) => item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to));
+
+  useEffect(() => {
+    if (!loading && role && allowed.length > 0 && !currentAllowed) {
+      window.location.replace(homePath);
+    }
+  }, [loading, role, allowed.length, currentAllowed, homePath]);
 
   if (loading) return null;
 
@@ -102,7 +110,7 @@ export function AppLayout() {
         </header>
 
         <div className="flex-1 p-10 overflow-y-auto">
-          {role && allowed.length > 0 ? <Outlet /> : <NoAccess onLogout={handleSignOut} />}
+          {role && allowed.length > 0 && currentAllowed ? <Outlet /> : <NoAccess onLogout={handleSignOut} />}
         </div>
       </main>
     </div>
