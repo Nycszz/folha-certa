@@ -28,6 +28,46 @@ type Log = {
   created_at: string;
 };
 
+const actionLabel: Record<string, string> = {
+  INSERT: "Criou",
+  UPDATE: "Alterou",
+  DELETE: "Excluiu",
+  CRIAR_USUARIO: "Criou usuário",
+  ATIVAR_USUARIO: "Ativou usuário",
+  DESATIVAR_USUARIO: "Desativou usuário",
+  ALTERAR_PERMISSAO: "Alterou perfil de acesso",
+  RESET_SENHA: "Redefiniu senha",
+  EXCLUIR_USUARIO: "Excluiu usuário",
+  ATUALIZAR_USUARIO: "Atualizou usuário",
+};
+
+const entityLabel: Record<string, string> = {
+  ft: "Movimentação",
+  funcionarios: "Funcionários",
+  profiles: "Usuários",
+  user_roles: "Perfis de acesso",
+};
+
+function getModule(log: Log) {
+  const fromData = (log.new_data as any)?.modulo ?? (log.old_data as any)?.modulo;
+  if (typeof fromData === "string" && fromData.trim()) return fromData;
+  return entityLabel[log.entity_type] ?? log.entity_type;
+}
+
+function getAction(log: Log) {
+  return actionLabel[log.action] ?? log.action;
+}
+
+function getObjectDescription(log: Log) {
+  const oldData = (log.old_data as any) ?? {};
+  const newData = (log.new_data as any) ?? {};
+  const username = newData.username ?? oldData.username;
+  const nome = newData.nome ?? oldData.nome;
+  const role = newData.role ?? (Array.isArray(newData.roles) ? newData.roles.join(", ") : undefined);
+  const parts = [username, nome, role].filter(Boolean);
+  return parts.length ? parts.join(" | ") : (log.entity_id ?? "—");
+}
+
 function AuditoriaPage() {
   const { isGestor } = useAuth();
   const [logs, setLogs] = useState<Log[]>([]);
@@ -58,7 +98,10 @@ function AuditoriaPage() {
     return logs.filter((l) => {
       if (fUser && !(l.username ?? "").toLowerCase().includes(fUser.toLowerCase())) return false;
       if (fRole && l.role !== fRole) return false;
-      if (fAction && !l.action.toLowerCase().includes(fAction.toLowerCase())) return false;
+      if (fAction) {
+        const actionText = `${l.action} ${getAction(l)}`.toLowerCase();
+        if (!actionText.includes(fAction.toLowerCase())) return false;
+      }
       if (fEntity && l.entity_type !== fEntity) return false;
       if (fStart && l.created_at < fStart) return false;
       if (fEnd && l.created_at > fEnd + "T23:59:59") return false;
@@ -69,15 +112,15 @@ function AuditoriaPage() {
   if (!isGestor) return <div className="text-sm text-muted-foreground">Acesso restrito ao Gestor.</div>;
 
   function exportCsv() {
-    const headers = ["Data", "Usuário", "Permissão", "Ação", "Tipo", "Registro", "Descrição"];
+    const headers = ["Data", "Usuário", "Permissão", "Ação", "Módulo", "Registro", "Descrição"];
     const lines = [headers.join(";")];
     filtered.forEach((l) => {
       lines.push([
         format(new Date(l.created_at), "dd/MM/yyyy HH:mm:ss"),
         l.username ?? "",
         l.role ?? "",
-        l.action,
-        l.entity_type,
+        getAction(l),
+        getModule(l),
         l.entity_id ?? "",
         (l.description ?? "").replace(/[;\n]/g, " "),
       ].join(";"));
@@ -95,7 +138,7 @@ function AuditoriaPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-light tracking-tight">Auditoria</h1>
-        <p className="text-muted-foreground mt-1">Registro imutável de todas as ações relevantes do sistema.</p>
+        <p className="text-muted-foreground mt-1">Registro imutável com usuário, ação, módulo e detalhes do que foi alterado.</p>
       </div>
 
       <div className="bg-card border border-oak-light rounded-3xl p-6 grid grid-cols-2 md:grid-cols-7 gap-3 items-end">
@@ -108,7 +151,7 @@ function AuditoriaPage() {
             <option value="supervisor">Supervisor</option>
           </select>
         </Field>
-        <Field label="Ação"><input value={fAction} onChange={(e) => setFAction(e.target.value)} className={inp} placeholder="INSERT, UPDATE..." /></Field>
+        <Field label="Ação"><input value={fAction} onChange={(e) => setFAction(e.target.value)} className={inp} placeholder="Criou, alterou, excluiu..." /></Field>
         <Field label="Tipo">
           <select value={fEntity} onChange={(e) => setFEntity(e.target.value)} className={inp}>
             <option value="">Todos</option>
@@ -134,7 +177,7 @@ function AuditoriaPage() {
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
-                <Th>Data</Th><Th>Usuário</Th><Th>Permissão</Th><Th>Ação</Th><Th>Tipo</Th><Th>Descrição</Th>
+                <Th>Data/Hora</Th><Th>Usuário</Th><Th>Ação</Th><Th>Módulo</Th><Th>O que mudou</Th><Th>Descrição</Th>
               </tr>
             </thead>
             <tbody className="divide-y divide-oak-light">
@@ -143,9 +186,9 @@ function AuditoriaPage() {
                   <tr className="hover:bg-sand/20 cursor-pointer" onClick={() => setExpanded(expanded === l.id ? null : l.id)}>
                     <td className="px-6 py-3 text-xs tabular-nums">{format(new Date(l.created_at), "dd/MM/yy HH:mm:ss")}</td>
                     <td className="px-6 py-3 text-sm font-medium">{l.username ?? "—"}</td>
-                    <td className="px-6 py-3 text-xs uppercase tracking-wider">{l.role ?? "—"}</td>
-                    <td className="px-6 py-3 text-xs"><span className="px-2 py-0.5 bg-sand rounded">{l.action}</span></td>
-                    <td className="px-6 py-3 text-xs">{l.entity_type}</td>
+                    <td className="px-6 py-3 text-xs"><span className="px-2 py-0.5 bg-sand rounded">{getAction(l)}</span></td>
+                    <td className="px-6 py-3 text-xs">{getModule(l)}</td>
+                    <td className="px-6 py-3 text-xs">{getObjectDescription(l)}</td>
                     <td className="px-6 py-3 text-sm">{l.description ?? "—"}</td>
                   </tr>
                   {expanded === l.id && (l.old_data || l.new_data) && (

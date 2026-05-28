@@ -27,7 +27,7 @@ type Row = {
   re: string;
   cargo: string;
   cargo_original: string;
-  posto_servico: string;
+  empresa_origem: string;
   turno: string;
   cpf: string | null;
   data_admissao: string | null;
@@ -133,7 +133,7 @@ function ImportarFuncionarios() {
             re: codigo,
             cargo,
             cargo_original: cargoOrig,
-            posto_servico: empresa || cargo,
+            empresa_origem: empresa || cargo,
             turno: "Integral",
             cpf: cpfRaw || null,
             data_admissao: dataAdm,
@@ -164,7 +164,7 @@ function ImportarFuncionarios() {
     const failMsgs: string[] = [];
 
     for (let i = 0; i < rows.length; i += BATCH) {
-      const chunk = rows.slice(i, i + BATCH).map(({ cargo_original, ...rest }) => rest);
+      const chunk = rows.slice(i, i + BATCH).map(({ cargo_original, empresa_origem, ...rest }) => rest);
       const { error, count } = await supabase.from("funcionarios").insert(chunk, { count: "exact" });
       if (error) {
         failed += chunk.length;
@@ -242,7 +242,7 @@ function ImportarFuncionarios() {
                     <th className="px-3 py-2 text-left">RE</th>
                     <th className="px-3 py-2 text-left">Cargo original</th>
                     <th className="px-3 py-2 text-left">Cargo mapeado</th>
-                    <th className="px-3 py-2 text-left">Posto</th>
+                    <th className="px-3 py-2 text-left">Empresa (planilha)</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-oak-light">
@@ -252,7 +252,7 @@ function ImportarFuncionarios() {
                       <td className="px-3 py-1.5 tabular-nums">{r.re}</td>
                       <td className="px-3 py-1.5 text-oak-dark/60">{r.cargo_original}</td>
                       <td className="px-3 py-1.5 font-medium">{r.cargo}</td>
-                      <td className="px-3 py-1.5">{r.posto_servico}</td>
+                      <td className="px-3 py-1.5 text-oak-dark/60">{r.empresa_origem}</td>
                     </tr>
                   ))}
                 </tbody>

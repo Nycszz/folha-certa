@@ -72,7 +72,7 @@ function FuncionariosList() {
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
-                <Th>Nome</Th><Th>RE</Th><Th>Cargo</Th><Th>Posto</Th><Th>Turno</Th><Th>Banco horas</Th><Th>Status</Th><Th>Ações</Th>
+                <Th>Nome</Th><Th>RE</Th><Th>Cargo</Th><Th>Supervisor</Th><Th>Turno</Th><Th>Banco horas</Th><Th>Status</Th><Th>Ações</Th>
               </tr>
             </thead>
             <tbody className="divide-y divide-oak-light">
@@ -81,7 +81,7 @@ function FuncionariosList() {
                   <td className="px-8 py-5 text-sm font-medium">{f.nome}</td>
                   <td className="px-8 py-5 text-sm tabular-nums">{f.re}</td>
                   <td className="px-8 py-5 text-sm">{f.cargo}</td>
-                  <td className="px-8 py-5 text-sm">{f.posto_servico ?? f.setor ?? "—"}</td>
+                  <td className="px-8 py-5 text-sm">{f.supervisor ?? "—"}</td>
                   <td className="px-8 py-5 text-sm">{f.turno}</td>
                   <td className="px-8 py-5 text-sm">{f.usa_banco_horas ? "Sim" : "Não"}</td>
                   <td className="px-8 py-5">

@@ -58,7 +58,7 @@ function Aprovacoes() {
                   <StatusBadge status={f.status} />
                 </div>
                 <p className="text-xs text-oak-dark/60 mt-1">
-                  {f.funcionario?.cargo} • RE {f.funcionario?.re} • {format(new Date(f.data_ft + "T00:00:00"), "dd/MM/yyyy")} • {f.horas_trabalhadas}h • {f.escala_servico ?? f.tipo_folga ?? "—"}
+                  {f.funcionario?.cargo} • RE {f.funcionario?.re} • {format(new Date(f.data_ft + "T00:00:00"), "dd/MM/yyyy")} • {f.posto_falta ?? "—"} • {f.horas_trabalhadas}h • {f.escala_servico ?? f.tipo_folga ?? "—"}
                 </p>
                 {f.observacao && <p className="text-sm mt-2 text-oak-dark/80">{f.observacao}</p>}
               </div>

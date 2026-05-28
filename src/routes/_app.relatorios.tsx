@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import ExcelJS from "exceljs";
 import { FileSpreadsheet } from "lucide-react";
+import { POSTOS_FALTA } from "@/lib/postos";
 
 export const Route = createFileRoute("/_app/relatorios")({
   component: Relatorios,
@@ -22,6 +23,7 @@ function Relatorios() {
   const [end, setEnd] = useState(last.toISOString().split("T")[0]);
   const [nome, setNome] = useState("");
   const [cargo, setCargo] = useState("");
+  const [posto, setPosto] = useState("");
   const [raw, setRaw] = useState<any[]>([]);
   const [exporting, setExporting] = useState(false);
 
@@ -29,7 +31,7 @@ function Relatorios() {
   async function load() {
     const { data } = await supabase
       .from("ft")
-      .select("*, funcionario:funcionarios!ft_funcionario_id_fkey(nome, re, posto_servico, setor, cargo), funcionario_faltante:funcionarios!ft_funcionario_faltante_id_fkey(nome, re)")
+      .select("*, funcionario:funcionarios!ft_funcionario_id_fkey(nome, re, setor, cargo), funcionario_faltante:funcionarios!ft_funcionario_faltante_id_fkey(nome, re)")
       .gte("data_ft", start)
       .lte("data_ft", end)
       .order("data_ft");
@@ -39,8 +41,9 @@ function Relatorios() {
   const items = useMemo(() => raw.filter((i) => {
     if (nome && !(i.funcionario?.nome ?? "").toLowerCase().includes(nome.toLowerCase())) return false;
     if (cargo && i.funcionario?.cargo !== cargo) return false;
+    if (posto && i.posto_falta !== posto) return false;
     return true;
-  }), [raw, nome, cargo]);
+  }), [raw, nome, cargo, posto]);
 
   const totals = items.reduce(
     (acc, i) => {
@@ -93,7 +96,7 @@ function Relatorios() {
       sumTitle.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF7F1E5" } };
       ws.getRow(5).height = 24;
 
-      const headers = ["Data", "Colaborador", "RE", "Cargo", "Posto/Setor", "Escala", "Horas Trab.", "Valor (R$)", "Status"];
+      const headers = ["Data", "Colaborador", "RE", "Cargo", "Posto da falta", "Escala", "Horas Trab.", "Valor (R$)", "Status"];
       const headerRow = ws.getRow(6);
       headers.forEach((h, idx) => {
         const cell = headerRow.getCell(idx + 1);
@@ -116,7 +119,7 @@ function Relatorios() {
           i.funcionario?.nome ?? "—",
           i.funcionario?.re ?? "—",
           i.funcionario?.cargo ?? "—",
-          i.funcionario?.posto_servico ?? i.funcionario?.setor ?? "—",
+          i.posto_falta ?? "—",
           i.escala_servico ?? i.tipo_folga ?? "—",
           Number(i.horas_trabalhadas),
           Number(i.valor_pago ?? 0),
@@ -212,6 +215,13 @@ function Relatorios() {
             {CARGOS.map((c) => <option key={c} value={c}>{c || "Todos"}</option>)}
           </select>
         </div>
+        <div className="min-w-[200px] flex-1">
+          <label className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">Posto da falta</label>
+          <select value={posto} onChange={(e) => setPosto(e.target.value)} className="mt-2 w-full px-4 py-2.5 bg-sand rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-oak-dark/20">
+            <option value="">Todos</option>
+            {POSTOS_FALTA.map((p) => <option key={p} value={p}>{p}</option>)}
+          </select>
+        </div>
         <button onClick={exportExcel} disabled={exporting || items.length === 0} className="ml-auto inline-flex items-center gap-2 px-5 py-2.5 bg-oak-dark text-primary-foreground rounded-xl text-sm font-medium hover:opacity-90 disabled:opacity-50">
           <FileSpreadsheet className="size-4" />
           {exporting ? "Gerando..." : "Exportar Excel"}
@@ -242,7 +252,7 @@ function Relatorios() {
                   <td className="px-6 py-4 text-sm tabular-nums">{format(new Date(i.data_ft + "T00:00:00"), "dd/MM/yy")}</td>
                   <td className="px-6 py-4 text-sm font-medium">{i.funcionario?.nome}</td>
                   <td className="px-6 py-4 text-sm">{i.funcionario?.cargo ?? "—"}</td>
-                  <td className="px-6 py-4 text-sm">{i.funcionario?.posto_servico ?? i.funcionario?.setor ?? "—"}</td>
+                  <td className="px-6 py-4 text-sm max-w-[180px] truncate" title={i.posto_falta ?? ""}>{i.posto_falta ?? "—"}</td>
                   <td className="px-6 py-4 text-sm tabular-nums">{i.horas_trabalhadas}h</td>
                   <td className="px-6 py-4 text-sm tabular-nums">R$ {Number(i.valor_pago ?? 0).toFixed(2)}</td>
                   <td className="px-6 py-4"><StatusBadge status={i.status} /></td>

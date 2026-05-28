@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
 import { FuncionarioPicker } from "@/components/FuncionarioPicker";
+import { PostoCombobox } from "@/components/PostoCombobox";
 
 export const Route = createFileRoute("/_app/ft/novo")({
   component: NovaMovimentacao,
@@ -24,12 +25,14 @@ function NovaMovimentacao() {
     motivo: "Falta",
     horas_compensadas: 0,
     observacao: "",
+    posto_falta: "",
   });
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.funcionario_id) return toast.error("Selecione um funcionário");
+    if (!form.posto_falta.trim()) return toast.error("Selecione o posto onde ocorreu a falta");
     if (form.escala_servico === "Outros" && !form.escala_outros.trim())
       return toast.error("Informe a escala em 'Outros'");
 
@@ -47,6 +50,7 @@ function NovaMovimentacao() {
       horas_trabalhadas: horas,
       horas_compensadas: Number(form.horas_compensadas),
       observacao: form.observacao || null,
+      posto_falta: form.posto_falta,
       lancado_por: user?.id,
     });
     setLoading(false);
@@ -82,6 +86,12 @@ function NovaMovimentacao() {
           value={form.funcionario_faltante_id}
           onChange={(id) => setForm({ ...form, funcionario_faltante_id: id })}
           excludeId={form.funcionario_id}
+        />
+
+        <PostoCombobox
+          value={form.posto_falta}
+          onChange={(posto_falta) => setForm({ ...form, posto_falta })}
+          required
         />
 
         <div className="grid grid-cols-2 gap-5">

@@ -190,7 +190,6 @@ export type Database = {
           data_admissao: string | null
           id: string
           nome: string
-          posto_servico: string | null
           re: string
           setor: string | null
           status: string
@@ -208,7 +207,6 @@ export type Database = {
           data_admissao?: string | null
           id?: string
           nome: string
-          posto_servico?: string | null
           re: string
           setor?: string | null
           status?: string
@@ -226,7 +224,6 @@ export type Database = {
           data_admissao?: string | null
           id?: string
           nome?: string
-          posto_servico?: string | null
           re?: string
           setor?: string | null
           status?: string

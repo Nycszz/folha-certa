@@ -14,7 +14,6 @@ export function FuncionarioForm({ initial, onDone }: Props) {
     nome: initial?.nome ?? "",
     re: initial?.re ?? "",
     cargo: initial?.cargo ?? "Vigilante",
-    posto_servico: initial?.posto_servico ?? "Vigilante",
     supervisor: initial?.supervisor ?? "",
     turno: initial?.turno ?? "Manhã",
     usa_banco_horas: initial?.usa_banco_horas ?? false,
@@ -42,7 +41,6 @@ export function FuncionarioForm({ initial, onDone }: Props) {
         <Field label="Nome completo" value={form.nome} onChange={set("nome")} required />
         <Field label="RE" value={form.re} onChange={set("re")} required />
         <SelectField label="Cargo" value={form.cargo} onChange={set("cargo")} options={CARGOS} />
-        <SelectField label="Posto de serviço" value={form.posto_servico} onChange={set("posto_servico")} options={CARGOS} />
         <Field label="Supervisor" value={form.supervisor} onChange={set("supervisor")} />
         <SelectField label="Turno" value={form.turno} onChange={set("turno")} options={["Manhã", "Tarde", "Noite", "Integral"]} />
         <SelectField label="Banco de horas" value={form.usa_banco_horas ? "true" : "false"}

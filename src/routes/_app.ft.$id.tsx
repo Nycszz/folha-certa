@@ -61,6 +61,7 @@ function FtDetalhe() {
 
       <div className="bg-card border border-oak-light rounded-3xl p-8 grid grid-cols-2 gap-6">
         <Info label="Data" value={format(new Date(ft.data_ft + "T00:00:00"), "dd 'de' MMMM, yyyy", { locale: ptBR })} />
+        <Info label="Posto da falta" value={ft.posto_falta ?? "—"} className="col-span-2" />
         <Info label="Escala" value={ft.escala_servico ?? ft.tipo_folga ?? "—"} />
         <Info label="Horas trabalhadas" value={`${ft.horas_trabalhadas}h`} />
         <Info label="Horas compensadas" value={`${ft.horas_compensadas}h`} />

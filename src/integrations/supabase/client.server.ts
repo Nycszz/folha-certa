@@ -5,15 +5,54 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
+/** Extrai o project ref do host Supabase (ex.: https://abc.supabase.co → abc). */
+function projectRefFromUrl(url: string): string | null {
+  const match = url.match(/https:\/\/([^.]+)\.supabase\.co/i);
+  return match?.[1] ?? null;
+}
+
+/** Lê o campo `ref` do JWT sem validar assinatura (só para diagnóstico de .env). */
+function projectRefFromJwt(token: string): string | null {
+  try {
+    const payload = token.split(".")[1];
+    if (!payload) return null;
+    const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const json = JSON.parse(atob(base64));
+    return typeof json.ref === "string" ? json.ref : null;
+  } catch {
+    return null;
+  }
+}
+
+function assertSupabaseAdminEnvMatch(url: string, serviceRoleKey: string) {
+  // Chaves novas do Supabase (sb_secret_*) não são JWT — validação por ref não se aplica
+  if (serviceRoleKey.startsWith("sb_secret_") || serviceRoleKey.startsWith("sbp_")) return;
+
+  const urlRef = projectRefFromUrl(url);
+  const keyRef = projectRefFromJwt(serviceRoleKey);
+  if (!urlRef || !keyRef || urlRef === keyRef) return;
+
+  throw new Error(
+    `SUPABASE_URL aponta para o projeto "${urlRef}", mas a service role key é do projeto "${keyRef}". ` +
+      `No painel do Supabase, abra o projeto "${urlRef}" → Settings → API e copie a chave "service_role" desse mesmo projeto. ` +
+      `Não use prefixo VITE_ nessa chave (ela só roda no servidor).`,
+  );
+}
+
 function createSupabaseAdminClient() {
   const SUPABASE_URL = process.env.SUPABASE_URL;
-  const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const SUPABASE_SERVICE_ROLE_KEY =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ??
+    process.env.SUPABASE_SERVICE_KEY ??
+    process.env.SUPABASE_SECRET_KEY;
 
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error(
-      'Missing Supabase server environment variables. Ensure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set.'
+      "Missing Supabase server environment variables. Ensure SUPABASE_URL and one of SUPABASE_SERVICE_ROLE_KEY/SUPABASE_SERVICE_KEY/SUPABASE_SECRET_KEY are set."
     );
   }
+
+  assertSupabaseAdminEnvMatch(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
   return createClient<Database>(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
     auth: {
