@@ -63,12 +63,15 @@ function FtList() {
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
-                <Th>Colaborador</Th><Th>Data</Th><Th>Posto</Th><Th>Escala</Th><Th>Horas</Th><Th>Status</Th>
+                <Th>Nº</Th><Th>Colaborador</Th><Th>Data</Th><Th>Posto</Th><Th>Escala</Th><Th>Horas</Th><Th>Status</Th>
               </tr>
             </thead>
             <tbody className="divide-y divide-oak-light">
               {filtered.map((f) => (
                 <tr key={f.id} className="hover:bg-sand/20 cursor-pointer" onClick={() => navigate({ to: "/ft/$id", params: { id: f.id } })}>
+                  <td className="px-8 py-5">
+                    <p className="text-xs font-mono text-oak-dark/70">{f.numero_ft ?? "—"}</p>
+                  </td>
                   <td className="px-8 py-5">
                     <p className="text-sm font-medium">{f.funcionario?.nome ?? "—"}</p>
                     <p className="text-[10px] text-oak-dark/60">RE {f.funcionario?.re}</p>
