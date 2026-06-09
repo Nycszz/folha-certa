@@ -10,8 +10,7 @@ type NavItem = { to: string; label: string; icon: any; roles: Role[] };
 const nav: NavItem[] = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, roles: ["gestor"] },
   { to: "/funcionarios", label: "Funcionários", icon: Users, roles: ["gestor", "apontamento"] },
-  { to: "/ft", label: "Movimentações", icon: ClipboardList, roles: ["gestor", "apontamento"] },
-  { to: "/ft/novo", label: "Nova movimentação", icon: ClipboardList, roles: ["supervisor"] },
+  { to: "/ft", label: "Movimentações", icon: ClipboardList, roles: ["gestor", "apontamento", "supervisor"] },
   { to: "/aprovacoes", label: "Aprovações", icon: CheckCircle2, roles: ["gestor"] },
   { to: "/relatorios", label: "Relatórios", icon: FileBarChart, roles: ["gestor", "apontamento"] },
   { to: "/historico", label: "Histórico", icon: History, roles: ["gestor", "apontamento"] },

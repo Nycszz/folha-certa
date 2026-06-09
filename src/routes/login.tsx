@@ -4,7 +4,8 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import logoGrupoMc from "@/assets/logo-grupo-mc.png";
+import logoOficial from "@/assets/logo-grupo-mc-oficial.png";
+import fachada from "@/assets/fachada.jpg";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -50,39 +51,45 @@ function LoginPage() {
     <div className="min-h-dvh flex flex-col md:flex-row">
 
       {/* ── Painel de marca ──────────────────────────────────── */}
-      <div className="relative md:w-[42%] bg-oak-dark flex flex-col items-center justify-center px-12 py-16 overflow-hidden shrink-0">
+      <div className="relative md:w-[48%] flex flex-col items-center justify-center shrink-0 overflow-hidden min-h-52 md:min-h-dvh">
 
-        {/* Elementos decorativos */}
-        <div className="absolute -top-28 -left-28 size-96 rounded-full bg-white/[0.04] pointer-events-none" />
-        <div className="absolute -bottom-36 -right-36 size-[28rem] rounded-full bg-white/[0.04] pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[520px] rounded-full border border-white/[0.07] pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[320px] rounded-full border border-white/[0.06] pointer-events-none" />
+        {/* Fachada como background */}
+        <img
+          src={fachada}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+
+        {/* Overlay gradiente para legibilidade */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
 
         {/* Conteúdo */}
-        <div className="relative z-10 text-center space-y-6">
+        <div className="relative z-10 flex flex-col items-center justify-center gap-5 px-10 py-14 text-center w-full h-full">
           <img
-            src={logoGrupoMc}
+            src={logoOficial}
             alt="Grupo MC"
-            className="mx-auto size-[72px] object-contain brightness-0 invert opacity-90"
+            className="w-28 md:w-36 object-contain drop-shadow-2xl"
           />
-          <div>
-            <h2 className="text-white/90 text-2xl font-light tracking-tight leading-snug">
-              Gestão de
+          <div className="space-y-1">
+            <h2 className="text-white text-2xl md:text-3xl font-semibold tracking-tight drop-shadow">
+              Grupo MC
             </h2>
-            <h2 className="text-white text-2xl font-semibold tracking-tight">
-              Movimentações
-            </h2>
+            <p className="text-white/70 text-sm md:text-base font-light tracking-wide">
+              Segurança e Serviços
+            </p>
           </div>
-          <div className="flex items-center justify-center gap-3">
-            <div className="h-px w-10 bg-white/20" />
-            <span className="text-white/40 text-[10px] tracking-widest uppercase">
-              Acesso corporativo
+
+          <div className="flex items-center gap-3 mt-1">
+            <div className="h-px w-10 bg-white/25" />
+            <span className="text-white/45 text-[10px] tracking-widest uppercase">
+              Gestão de Movimentações
             </span>
-            <div className="h-px w-10 bg-white/20" />
+            <div className="h-px w-10 bg-white/25" />
           </div>
         </div>
 
-        <p className="absolute bottom-6 left-0 right-0 text-center text-white/25 text-[10px] tracking-widest uppercase">
+        <p className="absolute bottom-5 left-0 right-0 text-center text-white/25 text-[10px] tracking-widest uppercase z-10">
           Grupo MC © {new Date().getFullYear()}
         </p>
       </div>
@@ -93,7 +100,7 @@ function LoginPage() {
 
           <div>
             <p className="text-[10px] font-bold text-oak-dark/40 uppercase tracking-widest mb-3">
-              Bem-vindo
+              Acesso corporativo
             </p>
             <h1 className="text-[2rem] font-light tracking-tight leading-none">
               Faça seu login
