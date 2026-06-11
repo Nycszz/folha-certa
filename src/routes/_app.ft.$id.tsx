@@ -81,7 +81,7 @@ function FtDetalhe() {
         <ChevronLeft className="size-3" /> Voltar
       </Link>
 
-      <div className="flex items-start justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">Movimentação {ft.numero_ft ?? `#${ft.id.slice(0, 8)}`}</p>
           <h1 className="text-3xl font-light tracking-tight mt-1">{ft.funcionario?.nome}</h1>
@@ -90,7 +90,7 @@ function FtDetalhe() {
         <StatusBadge status={ft.status} />
       </div>
 
-      <div className="bg-card border border-oak-light rounded-3xl p-8 grid grid-cols-2 gap-6">
+      <div className="bg-card border border-oak-light rounded-3xl p-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
         <Info label="Data" value={format(new Date(ft.data_ft + "T00:00:00"), "dd 'de' MMMM, yyyy", { locale: ptBR })} />
         <Info label="Posto da falta" value={ft.posto_falta ?? "—"} className="col-span-2" />
         <Info label="Escala" value={ft.escala_servico ?? ft.tipo_folga ?? "—"} />
@@ -106,7 +106,7 @@ function FtDetalhe() {
       </div>
 
       {isPending && isGestor && (
-        <div className="flex gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row">
           <button onClick={() => changeStatus("APROVADA")} className="flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 text-white px-5 py-3 rounded-xl text-sm font-medium hover:bg-emerald-700">
             <Check className="size-4" /> Aprovar
           </button>
@@ -175,7 +175,7 @@ function FtDetalhe() {
         ) : (
           <ul className="divide-y divide-oak-light">
             {historico.map((h) => (
-              <li key={h.id} className="px-8 py-4 flex items-center justify-between text-sm">
+              <li key={h.id} className="px-8 py-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm">
                 <div>
                   <span className="font-medium">{h.acao}</span>
                   {h.status_anterior && <span className="text-oak-dark/60"> • {h.status_anterior} → {h.status_novo}</span>}

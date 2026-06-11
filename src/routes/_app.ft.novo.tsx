@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_app/ft/novo")({
 });
 
 const ESCALAS = ["06x18", "18x06", "07x19", "19x07", "08x18", "Outros"];
-const MOTIVOS = ["Falta", "Atestado", "Remanejamento", "Reciclagem"];
+const MOTIVOS = ["Falta", "Atestado", "Remanejamento", "Reciclagem", "Falta de efetivo"];
 
 function NovaMovimentacao() {
   const navigate = useNavigate();
@@ -94,7 +94,7 @@ function NovaMovimentacao() {
           required
         />
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label className="text-[10px] font-bold text-oak-dark/60 uppercase tracking-widest">Data</label>
             <input type="date" required value={form.data_ft} onChange={set("data_ft")} className="mt-2 w-full px-4 py-2.5 bg-sand rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-oak-dark/20" />
@@ -128,9 +128,9 @@ function NovaMovimentacao() {
           <textarea value={form.observacao} onChange={set("observacao")} rows={3} className="mt-2 w-full px-4 py-2.5 bg-sand rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-oak-dark/20" />
         </div>
 
-        <div className="flex justify-end gap-3 pt-4 border-t border-oak-light">
-          <button type="button" onClick={() => navigate({ to: "/ft" })} className="px-5 py-2.5 text-sm font-medium text-oak-dark hover:bg-oak-medium/20 rounded-xl">Cancelar</button>
-          <button type="submit" disabled={loading} className="px-6 py-2.5 bg-oak-dark text-primary-foreground text-sm font-medium rounded-xl hover:opacity-90 disabled:opacity-50">
+        <div className="flex flex-col-reverse gap-3 pt-4 border-t border-oak-light sm:flex-row sm:justify-end">
+          <button type="button" onClick={() => navigate({ to: "/ft" })} className="w-full sm:w-auto px-5 py-2.5 text-sm font-medium text-oak-dark hover:bg-oak-medium/20 rounded-xl">Cancelar</button>
+          <button type="submit" disabled={loading} className="w-full sm:w-auto px-6 py-2.5 bg-oak-dark text-primary-foreground text-sm font-medium rounded-xl hover:opacity-90 disabled:opacity-50">
             {loading ? "Salvando..." : "Registrar Movimentação"}
           </button>
         </div>

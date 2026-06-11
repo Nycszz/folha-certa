@@ -141,7 +141,7 @@ function AuditoriaPage() {
         <p className="text-muted-foreground mt-1">Registro imutável com usuário, ação, módulo e detalhes do que foi alterado.</p>
       </div>
 
-      <div className="bg-card border border-oak-light rounded-3xl p-6 grid grid-cols-2 md:grid-cols-7 gap-3 items-end">
+      <div className="bg-card border border-oak-light rounded-3xl p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 gap-3 items-end">
         <Field label="Usuário"><input value={fUser} onChange={(e) => setFUser(e.target.value)} className={inp} placeholder="username" /></Field>
         <Field label="Permissão">
           <select value={fRole} onChange={(e) => setFRole(e.target.value)} className={inp}>
@@ -163,7 +163,7 @@ function AuditoriaPage() {
         </Field>
         <Field label="De"><input type="date" value={fStart} onChange={(e) => setFStart(e.target.value)} className={inp} /></Field>
         <Field label="Até"><input type="date" value={fEnd} onChange={(e) => setFEnd(e.target.value)} className={inp} /></Field>
-        <button onClick={exportCsv} disabled={!filtered.length} className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-oak-dark text-primary-foreground rounded-xl text-sm font-medium hover:opacity-90 disabled:opacity-50">
+        <button onClick={exportCsv} disabled={!filtered.length} className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-oak-dark text-primary-foreground rounded-xl text-sm font-medium hover:opacity-90 disabled:opacity-50">
           <Download className="size-4" /> CSV
         </button>
       </div>
@@ -174,6 +174,7 @@ function AuditoriaPage() {
         ) : filtered.length === 0 ? (
           <div className="p-12 text-center text-sm text-muted-foreground">Nenhum registro.</div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
@@ -193,7 +194,7 @@ function AuditoriaPage() {
                   </tr>
                   {expanded === l.id && (l.old_data || l.new_data) && (
                     <tr><td colSpan={6} className="px-6 py-4 bg-sand/10">
-                      <div className="grid grid-cols-2 gap-4 text-xs">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                         <div><div className="font-bold mb-1">Antes</div><pre className="bg-card p-3 rounded overflow-auto max-h-60">{JSON.stringify(l.old_data, null, 2)}</pre></div>
                         <div><div className="font-bold mb-1">Depois</div><pre className="bg-card p-3 rounded overflow-auto max-h-60">{JSON.stringify(l.new_data, null, 2)}</pre></div>
                       </div>
@@ -203,6 +204,7 @@ function AuditoriaPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

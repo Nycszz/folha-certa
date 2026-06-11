@@ -88,7 +88,7 @@ function Aprovacoes() {
         ) : (
           <div className="space-y-4">
             {items.map((f) => (
-              <div key={f.id} className="bg-card border border-oak-light rounded-3xl p-6 flex items-center gap-6 hover:shadow-md transition-shadow">
+              <div key={f.id} className="bg-card border border-oak-light rounded-3xl p-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6 hover:shadow-md transition-shadow">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3">
                     <p className="font-medium">{f.funcionario?.nome}</p>
@@ -99,16 +99,16 @@ function Aprovacoes() {
                   </p>
                   {f.observacao && <p className="text-sm mt-2 text-oak-dark/80">{f.observacao}</p>}
                 </div>
-                <div className="flex gap-2 shrink-0">
-                  <button onClick={() => navigate({ to: "/ft/$id", params: { id: f.id } })} className="px-4 py-2 text-xs font-medium border border-oak-medium rounded-xl hover:bg-oak-medium/20">
+                <div className="flex flex-wrap gap-2 sm:shrink-0">
+                  <button onClick={() => navigate({ to: "/ft/$id", params: { id: f.id } })} className="flex-1 sm:flex-none px-4 py-2 text-xs font-medium border border-oak-medium rounded-xl hover:bg-oak-medium/20">
                     Detalhes
                   </button>
                   {isGestor && (
                     <>
-                      <button onClick={() => decide(f.id, "APROVADA")} className="inline-flex items-center gap-1 px-4 py-2 text-xs font-medium bg-emerald-600 text-white rounded-xl hover:bg-emerald-700">
+                      <button onClick={() => decide(f.id, "APROVADA")} className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 py-2 text-xs font-medium bg-emerald-600 text-white rounded-xl hover:bg-emerald-700">
                         <Check className="size-3" /> Aprovar
                       </button>
-                      <button onClick={() => decide(f.id, "NEGADA")} className="inline-flex items-center gap-1 px-4 py-2 text-xs font-medium bg-rose-600 text-white rounded-xl hover:bg-rose-700">
+                      <button onClick={() => decide(f.id, "NEGADA")} className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 py-2 text-xs font-medium bg-rose-600 text-white rounded-xl hover:bg-rose-700">
                         <X className="size-3" /> Negar
                       </button>
                     </>
@@ -136,7 +136,7 @@ function Aprovacoes() {
             <div className="space-y-4">
               {solicitacoes.map((s) => (
                 <div key={s.id} className="bg-card border border-orange-200 rounded-3xl p-6 space-y-4">
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-mono text-xs text-oak-dark/60">{s.ft?.numero_ft ?? "—"}</span>
@@ -155,29 +155,29 @@ function Aprovacoes() {
                     </div>
                     <button
                       onClick={() => navigate({ to: "/ft/$id", params: { id: s.ft_id } })}
-                      className="shrink-0 px-3 py-1.5 text-xs font-medium border border-oak-medium rounded-xl hover:bg-oak-medium/20"
+                      className="shrink-0 px-3 py-1.5 text-xs font-medium border border-oak-medium rounded-xl hover:bg-oak-medium/20 w-full sm:w-auto"
                     >
                       Ver FT
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-3 pt-2 border-t border-oak-light">
+                  <div className="flex flex-col gap-3 pt-2 border-t border-oak-light sm:flex-row sm:items-center">
                     <input
                       type="text"
                       placeholder="Observação (opcional)"
                       value={obsMap[s.id] ?? ""}
                       onChange={(e) => setObsMap((prev) => ({ ...prev, [s.id]: e.target.value }))}
-                      className="flex-1 text-sm bg-transparent border border-oak-light rounded-xl px-3 py-2 focus:outline-none focus:border-oak-medium"
+                      className="flex-1 text-sm bg-transparent border border-oak-light rounded-xl px-3 py-2 focus:outline-none focus:border-oak-medium w-full"
                     />
                     <button
                       onClick={() => decidirCancelamento(s.id, "aprovar")}
-                      className="inline-flex items-center gap-1 px-4 py-2 text-xs font-medium bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 shrink-0"
+                      className="inline-flex items-center justify-center gap-1 px-4 py-2 text-xs font-medium bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 shrink-0 w-full sm:w-auto"
                     >
                       <Check className="size-3" /> Aprovar
                     </button>
                     <button
                       onClick={() => decidirCancelamento(s.id, "rejeitar")}
-                      className="inline-flex items-center gap-1 px-4 py-2 text-xs font-medium bg-rose-600 text-white rounded-xl hover:bg-rose-700 shrink-0"
+                      className="inline-flex items-center justify-center gap-1 px-4 py-2 text-xs font-medium bg-rose-600 text-white rounded-xl hover:bg-rose-700 shrink-0 w-full sm:w-auto"
                     >
                       <X className="size-3" /> Rejeitar
                     </button>

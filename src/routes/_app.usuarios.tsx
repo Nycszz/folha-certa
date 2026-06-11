@@ -262,7 +262,7 @@ function UsuariosPage() {
         <button
           disabled={creating}
           type="submit"
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-oak-dark text-primary-foreground rounded-xl text-sm font-medium hover:opacity-90 disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-oak-dark text-primary-foreground rounded-xl text-sm font-medium hover:opacity-90 disabled:opacity-50 w-full sm:w-auto"
         >
           <Plus className="size-4" /> {creating ? "Criando..." : "Criar usuário"}
         </button>
@@ -274,6 +274,7 @@ function UsuariosPage() {
         ) : rows.length === 0 ? (
           <div className="p-12 text-center text-sm text-muted-foreground">Nenhum usuário cadastrado.</div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
@@ -343,6 +344,7 @@ function UsuariosPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

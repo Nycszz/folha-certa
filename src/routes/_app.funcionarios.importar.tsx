@@ -220,7 +220,7 @@ function ImportarFuncionarios() {
 
         {rows.length > 0 && (
           <>
-            <div className="flex items-center justify-between border-t border-oak-light pt-6">
+            <div className="flex flex-col gap-4 border-t border-oak-light pt-6 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <div className="text-2xl font-light">{rows.length}</div>
                 <div className="text-xs text-oak-dark/60 uppercase tracking-widest">linhas prontas</div>
@@ -228,7 +228,7 @@ function ImportarFuncionarios() {
               <button
                 onClick={handleImport}
                 disabled={loading}
-                className="px-6 py-3 bg-oak-dark text-primary-foreground text-sm font-medium rounded-xl hover:opacity-90 disabled:opacity-50"
+                className="w-full sm:w-auto px-6 py-3 bg-oak-dark text-primary-foreground text-sm font-medium rounded-xl hover:opacity-90 disabled:opacity-50"
               >
                 {loading ? "Importando..." : `Importar ${rows.length} funcionários`}
               </button>
@@ -265,10 +265,10 @@ function ImportarFuncionarios() {
         )}
 
         {result && (
-          <div className="border-t border-oak-light pt-6 flex items-center gap-3 text-sm">
+          <div className="border-t border-oak-light pt-6 flex flex-col gap-3 text-sm sm:flex-row sm:items-center">
             <CheckCircle2 className="size-5 text-emerald-600" />
             <span><strong>{result.inserted}</strong> inseridos. <strong>{result.failed}</strong> falharam.</span>
-            <button onClick={() => navigate({ to: "/funcionarios" })} className="ml-auto px-4 py-2 bg-oak-medium/30 rounded-xl text-xs font-medium">
+            <button onClick={() => navigate({ to: "/funcionarios" })} className="w-full sm:w-auto sm:ml-auto px-4 py-2 bg-oak-medium/30 rounded-xl text-xs font-medium">
               Ver funcionários
             </button>
           </div>

@@ -32,6 +32,7 @@ function Historico() {
         {items.length === 0 ? (
           <div className="p-12 text-center text-sm text-muted-foreground">Nenhum registro no histórico.</div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
               <tr className="bg-sand/30">
@@ -53,6 +54,7 @@ function Historico() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

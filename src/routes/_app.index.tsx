@@ -89,31 +89,33 @@ function Dashboard() {
               <Link to="/ft/novo" className="text-oak-dark font-medium hover:underline">Registrar primeira movimentação</Link>
             </div>
           ) : (
-            <table className="w-full text-left">
-              <thead>
-                <tr className="bg-sand/30">
-                  <Th>Colaborador</Th>
-                  <Th>Data</Th>
-                  <Th>Horas</Th>
-                  <Th>Status</Th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-oak-light">
-                {recent.map((r) => (
-                  <tr key={r.id} className="hover:bg-sand/20 transition-colors">
-                    <td className="px-8 py-5">
-                      <p className="text-sm font-medium">{r.funcionario?.nome ?? "—"}</p>
-                      <p className="text-[10px] text-oak-dark/60">{r.funcionario?.cargo ?? ""}</p>
-                    </td>
-                    <td className="px-8 py-5 text-sm tabular-nums">
-                      {format(new Date(r.data_ft + "T00:00:00"), "dd MMM", { locale: ptBR })}
-                    </td>
-                    <td className="px-8 py-5 text-sm font-medium tabular-nums">{r.horas_trabalhadas}h</td>
-                    <td className="px-8 py-5"><StatusBadge status={r.status} /></td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="bg-sand/30">
+                    <Th>Colaborador</Th>
+                    <Th>Data</Th>
+                    <Th>Horas</Th>
+                    <Th>Status</Th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-oak-light">
+                  {recent.map((r) => (
+                    <tr key={r.id} className="hover:bg-sand/20 transition-colors">
+                      <td className="px-8 py-5">
+                        <p className="text-sm font-medium">{r.funcionario?.nome ?? "—"}</p>
+                        <p className="text-[10px] text-oak-dark/60">{r.funcionario?.cargo ?? ""}</p>
+                      </td>
+                      <td className="px-8 py-5 text-sm tabular-nums">
+                        {format(new Date(r.data_ft + "T00:00:00"), "dd MMM", { locale: ptBR })}
+                      </td>
+                      <td className="px-8 py-5 text-sm font-medium tabular-nums">{r.horas_trabalhadas}h</td>
+                      <td className="px-8 py-5"><StatusBadge status={r.status} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
 
